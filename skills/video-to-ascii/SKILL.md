@@ -86,9 +86,33 @@ an integer multiple and the wrap is seamless by construction - measured at 0.97x
 frame step, against a filmed loop that always has a seam. Step 7's three-copy
 interpolation exists to paper over that seam; a generated field never needs it.
 
-**What this cannot do.** Anything representational. Rain, interference, rotation, type
-and geometry are formulas; a jellyfish is not. Asked for a recognisable creature, use a
-video - or generate a still and animate it as in step 1. Do not try to write an animal.
+**A field is for effects.** Rain, interference, rotation, type and geometry are formulas.
+A jellyfish is not - do not try to write an animal as arithmetic. Draw it instead:
+
+### 1c. Draw the keyframes yourself
+
+```bash
+python3 ${CLAUDE_SKILL_DIR}/scripts/generate.py <workdir> --keyframes keys.txt --frames 48
+```
+
+`keys.txt` is ASCII frames separated by a line of `---`. Draw six or eight; the same
+motion interpolation step 7 uses fills the rest. Six drawn frames of a jellyfish pulsing
+came out as 33, with a median step of 0.094 per cell and the wrap at 1.06x - the
+in-betweens are real, the bell contracting and the tentacles drawing together in frames
+nobody wrote.
+
+**Draw few, interpolate many.** A full sheet is 84x28 x 48 frames: 113,000 characters
+across 1,344 rows that all have to stay aligned while the form deforms. That is where
+writing every frame falls apart. Eight keyframes is a sixth of the tokens and the
+coherence comes from the interpolator instead of from your own consistency.
+
+**Ragged rows are fine.** Rows are padded to the widest and frames to the tallest, because
+trailing spaces get eaten and a short row is not worth another round trip.
+
+**Give the motion something to track.** `minterpolate` estimates in blocks and sees
+nothing at grid resolution - at 24x8 it returned zero frames. The script upscales 16x for
+the estimate and comes back down; a shape that moves a long way between keyframes will
+still tear, so draw more of them rather than fewer.
 
 ### 2. Window and crop
 

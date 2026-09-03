@@ -64,6 +64,7 @@ ap.add_argument("workdir")
 ap.add_argument("--expr", help="Python expression over x, y, t (math available as m)")
 ap.add_argument("--module", help="path to a .py defining field(x, y, t)")
 ap.add_argument("--preset", choices=sorted(PRESETS), help="one of the built-in fields")
+ap.add_argument("--keyframes", help="a file of ASCII frames separated by --- ; interpolated up to --frames")
 ap.add_argument("--cols", type=int, default=84)
 ap.add_argument("--rows", type=int, help="default keeps a 16:9 frame at this cell aspect")
 ap.add_argument("--frames", type=int, default=48)
@@ -73,11 +74,14 @@ ap.add_argument("--gamma", type=float, default=1.0, help="<1 lifts midtones, >1 
 ap.add_argument("--ramp", default=" .:-=+*#%@")
 a = ap.parse_args()
 
-sources = [bool(a.expr), bool(a.module), bool(a.preset)]
+sources = [bool(a.expr), bool(a.module), bool(a.preset), bool(a.keyframes)]
 if sum(sources) != 1:
-    sys.exit("ERROR: give exactly one of --expr, --module, --preset")
+    sys.exit("ERROR: give exactly one of --expr, --module, --preset, --keyframes")
 
-if a.module:
+field = None
+if a.keyframes:
+    pass
+elif a.module:
     scope: dict = {}
     exec(compile(open(a.module).read(), a.module, "exec"), scope)  # noqa: S102
     if "field" not in scope:
@@ -88,21 +92,55 @@ else:
     code = compile(src, "<field>", "eval")
     field = lambda x, y, t: eval(code, {"m": math, "__builtins__": {"min": min, "max": max, "abs": abs}}, {"x": x, "y": y, "t": t})  # noqa: S307,E731
 
-# A character cell is about 0.6 as wide as it is tall, same constant the video
-# path uses, so a field written for a square frame comes out square.
-rows = a.rows or max(1, round(a.cols * 0.6 * 9 / 16))
-size = a.cols * rows
-count = a.frames
+if a.keyframes:
+    # Drawn frames, separated by `---`. Padded rather than validated: a model
+    # writing ASCII drops trailing spaces and occasionally a whole short row,
+    # and rejecting the sheet over that would send it round again for nothing.
+    blocks = [b for b in open(a.keyframes).read().rstrip("\n").split("---\n")]
+    keys = [[r for r in b.split("\n")] for b in blocks]
+    keys = [[r for r in k if r.strip() or True] for k in keys]
+    keys = [k[:-1] if k and k[-1] == "" else k for k in keys]
+    a.cols = max(len(r) for k in keys for r in k)
+    rows = max(len(k) for k in keys)
+    keys = [[r.ljust(a.cols) for r in k] + [" " * a.cols] * (rows - len(k)) for k in keys]
 
-raw = bytearray(size * count)
-for f in range(count):
-    t = 2 * math.pi * f / count
-    base = f * size
-    for r in range(rows):
-        y = (r + 0.5) / rows
-        for c in range(a.cols):
-            v = field((c + 0.5) / a.cols, y, t)
-            raw[base + r * a.cols + c] = 0 if v <= 0 else 255 if v >= 1 else int(v * 255)
+    lut = {ch: i / (len(a.ramp) - 1) for i, ch in enumerate(a.ramp)}
+    src = bytes(int(255 * lut.get(c, 0.0)) for k in keys for r in k for c in r)
+
+    # `minterpolate` estimates motion in blocks and sees nothing at grid
+    # resolution — at 24x8 it returned zero frames. Estimate upscaled, then come
+    # back down.
+    S = 16
+    raw = bytearray(subprocess.run(
+        ["ffmpeg", "-v", "error", "-f", "rawvideo", "-pix_fmt", "gray",
+         "-s", f"{a.cols}x{rows}", "-r", str(len(keys)), "-i", "-",
+         "-vf", f"scale={a.cols*S}:{rows*S}:flags=neighbor,"
+                f"minterpolate=fps={a.frames}:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,"
+                f"scale={a.cols}:{rows}:flags=area",
+         "-f", "rawvideo", "-pix_fmt", "gray", "-"],
+        input=src, capture_output=True, check=True).stdout)
+    size = a.cols * rows
+    count = len(raw) // size
+    if count == 0:
+        sys.exit("ERROR: interpolation produced no frames")
+    raw = raw[:count * size]
+    print(f"drew {len(keys)} keyframes -> {count} frames", file=sys.stderr)
+else:
+    # A character cell is about 0.6 as wide as it is tall, same constant the
+    # video path uses, so a field written for a square frame comes out square.
+    rows = a.rows or max(1, round(a.cols * 0.6 * 9 / 16))
+    size = a.cols * rows
+    count = a.frames
+
+    raw = bytearray(size * count)
+    for f in range(count):
+        t = 2 * math.pi * f / count
+        base = f * size
+        for r in range(rows):
+            y = (r + 0.5) / rows
+            for c in range(a.cols):
+                v = field((c + 0.5) / a.cols, y, t)
+                raw[base + r * a.cols + c] = 0 if v <= 0 else 255 if v >= 1 else int(v * 255)
 
 # Same tiling rule as extract.py, so the sheet is laid out identically.
 tileX = math.ceil(math.sqrt(count))
