@@ -37,6 +37,18 @@ It is deliberately opinionated about two things:
 [FINDINGS.md](FINDINGS.md) records what was measured while building with it, including
 the two bugs that cost the most time.
 
+### `creating-logos`
+
+Designs a logo, app icon or brand mark as an engagement rather than a drawing task:
+brief, landscape, meaning, direction, sketch, refine, finish, prior-art check, handoff —
+each stage ending in something rendered and one decision for the client.
+
+Its two load-bearing ideas are that a contact sheet of competitor logos is not a study
+until you can say *why* each one looks like that, and that the brief is frequently
+sitting inside the product's own name. It is also blunt that hand-authored SVG
+primitives produce diagrams rather than designs: concept with an image model, then trace
+the winner back to exact vector by measuring it.
+
 ## Licence
 
 MIT, except `skills/video-to-ascii/demo/`, whose asset derives from a CC BY-SA 3.0
