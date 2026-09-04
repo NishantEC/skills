@@ -175,7 +175,8 @@ for f in range(count):
         "".join(a.ramp[min(len(a.ramp) - 1, int(v * len(a.ramp)))] for v in fr[r * a.cols:(r + 1) * a.cols])
         for r in range(rows)))
 
-json.dump({"cols": a.cols, "rows": rows, "count": count, "tileX": tileX,
+json.dump({"cmd": sys.argv, "cwd": os.getcwd(),
+           "cols": a.cols, "rows": rows, "count": count, "tileX": tileX,
            "fps": round(a.fps, 2), "levels": levels, "art": art},
           open(os.path.join(a.workdir, "frames.json"), "w"))
 

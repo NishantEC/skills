@@ -6,131 +6,333 @@ body{margin:0;background:#f4f4f3;color:#15151a;padding:40px 32px 80px;
  font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
 .wrap{max-width:1120px;margin:0 auto}
 h1{font-size:28px;font-weight:600;letter-spacing:-.02em;margin:0 0 6px}
-.sub{color:#8d8d92;font-size:13px;margin:0 0 28px}
+.sub{color:#8d8d92;font-size:13px;margin:0 0 28px;font-family:"Geist Mono",monospace}
 h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:#8d8d92;
  margin:38px 0 14px;padding-bottom:8px;border-bottom:1px solid #e2e2e0;font-weight:600}
+
+/* The panel is one object: the picture and the controls that change it share a
+   border, so it reads as an instrument rather than a figure with a form under it. */
+.panel{border:1px solid #e2e2e0;border-radius:14px;overflow:hidden;background:#fdfdfd}
+.stage{display:flex;justify-content:center;align-items:center;padding:22px}
+.stage canvas{width:100%;max-width:760px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;
+ border-top:1px solid #e2e2e0}
+.col{display:flex;flex-direction:column;gap:8px}
+
+/* Every control is the same slab: name on the left, value on the right. The
+   uniformity is the point — nothing here is more important than anything else. */
+.ctl{display:flex;align-items:center;justify-content:space-between;gap:10px;
+ background:#f1f1ef;border-radius:9px;padding:9px 12px;min-height:38px;font-size:12px;
+ color:#5a5a5f;position:relative;overflow:hidden}
+.ctl>span{white-space:nowrap}
+.ctl .v{font-family:"Geist Mono",monospace;color:#15151a;font-size:12px}
+.ctl select{appearance:none;background:transparent;border:0;font:inherit;
+ font-family:"Geist Mono",monospace;font-size:12px;color:#15151a;text-align:right;
+ cursor:pointer;outline:none;max-width:60%}
+.ctl input[type=color]{appearance:none;border:0;background:none;width:22px;height:22px;
+ padding:0;cursor:pointer}
+.ctl input[type=color]::-webkit-color-swatch-wrapper{padding:0}
+.ctl input[type=color]::-webkit-color-swatch{border:1px solid #d6d6d3;border-radius:5px}
+
+/* A range with no thumb: the filled portion is the readout. A visible thumb
+   invited dragging a 1px target; the whole slab is the hit area instead. */
+.ctl.range input{position:absolute;inset:0;width:100%;height:100%;opacity:0;
+ cursor:ew-resize;margin:0}
+.ctl .fill{position:absolute;inset:0;background:#dcdcd8;pointer-events:none;
+ transform-origin:left;border-radius:0}
+.ctl.range>span,.ctl.range>.v{position:relative}
+
+.seg{display:flex;gap:2px;background:#e4e4e1;border-radius:7px;padding:2px}
+.seg button{font:inherit;font-size:11px;font-family:"Geist Mono",monospace;border:0;
+ background:none;color:#8d8d92;border-radius:5px;padding:3px 9px;cursor:pointer}
+.seg button.on{background:#fdfdfd;color:#15151a;font-weight:500}
+
+button.act{font:inherit;font-size:12px;font-weight:500;font-family:inherit;background:#131316;
+ color:#fff;border:0;border-radius:9px;padding:0 16px;cursor:pointer;min-height:38px;width:100%}
+button.act.done{background:#16a34a}
+button.act:disabled{background:#dcdcd8;color:#a0a0a4;cursor:default}
+
 .sheet{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.cell{background:#fdfdfd;padding:8px;position:relative}
+.cell{background:#fdfdfd;padding:8px;position:relative;border-radius:10px;
+ border:1px solid #ececea}
 .cell canvas{display:block;width:100%}
 .cell b{position:absolute;top:8px;left:10px;font:500 10px/1 "Geist Mono",monospace;color:#b4b4b8}
-.stage{background:#fdfdfd;padding:26px;display:flex;justify-content:center}
-.stage canvas{width:560px;max-width:100%}
-.bar{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:16px;background:#fdfdfd;padding:14px 18px}
-label{font-size:12px;color:#5a5a5f;display:flex;gap:8px;align-items:center}
-select,input{font:inherit;font-size:12px}
-button{font:inherit;font-size:12px;font-weight:500;background:#131316;color:#fff;
- border:0;border-radius:9px;padding:8px 16px;cursor:pointer}
-.cfgwrap{margin-top:14px;background:#131316;padding:16px 18px;display:flex;gap:16px;
+.cfgwrap{background:#131316;border-radius:12px;padding:16px 18px;display:flex;gap:16px;
  align-items:flex-start;justify-content:space-between}
 .cfgwrap pre{margin:0;color:#e8e8ea;font:400 12px/1.65 "Geist Mono",monospace;overflow:auto}
-.cfgwrap button{background:#fff;color:#131316;flex:none}
-.cfgwrap button.done{background:#4ade80}
-.note{margin-top:30px;padding:16px 18px;background:#fdfdfd;font-size:13px;color:#5a5a5f}
+.note{margin-top:30px;padding:16px 18px;background:#fdfdfd;border-radius:12px;
+ border:1px solid #ececea;font-size:13px;color:#5a5a5f}
 .note b{color:#15151a}
+.err{color:#b91c1c;font-size:12px;margin-top:10px;font-family:"Geist Mono",monospace}
+.busy{opacity:.45;transition:opacity .2s}
 </style></head><body><div class="wrap">
 <h1>__TITLE__</h1>
-<p class="sub">__COUNT__ frames &middot; grid __COLS__&times;__ROWS__</p>
+<p class="sub" id="sub"></p>
+
+<div class="panel">
+  <div class="stage" id="stagewrap"><canvas id="stage"></canvas></div>
+  <div class="grid">
+    <div class="col">
+      <label class="ctl"><span>Ramp</span><select id="ramp"></select></label>
+      <label class="ctl"><span>Density</span><select id="density"></select></label>
+      <label class="ctl range"><div class="fill" id="fill-contrast"></div><span>Contrast</span><span class="v" id="v-contrast"></span><input id="contrast" type="range" min="30" max="220" value="85"></label>
+      <div class="ctl"><span>Invert</span><div class="seg" id="invert"></div></div>
+    </div>
+    <div class="col">
+      <label class="ctl"><span>Palette</span><select id="palette"></select></label>
+      <label class="ctl"><span>Ink start</span><span><span class="v" id="v-ink"></span> <input id="ink" type="color"></span></label>
+      <label class="ctl"><span>Ink end</span><span><span class="v" id="v-ink2"></span> <input id="ink2" type="color"></span></label>
+      <label class="ctl"><span>Background</span><span><span class="v" id="v-bg"></span> <input id="bg" type="color"></span></label>
+    </div>
+    <div class="col">
+      <label class="ctl range"><div class="fill" id="fill-speed"></div><span>Speed</span><span class="v" id="v-speed"></span><input id="speed" type="range" min="0" max="6" value="5"></label>
+      <div class="ctl"><span>Playing</span><div class="seg" id="playing"></div></div>
+      <button class="act" id="copy">Copy preset</button>
+    </div>
+  </div>
+</div>
+<div class="err" id="err"></div>
 
 <h2>Contact sheet</h2>
 <div class="sheet" id="sheet"></div>
 
-<h2>Live playback</h2>
-<div class="stage"><canvas id="stage"></canvas></div>
-<div class="bar">
-  <label>Glyphs <select id="ramp">
-    <option value=".:-=+*#%@">density</option>
-    <option value="0101">binary 0/1</option>
-    <option value="^/+=1234579">digits + symbols</option>
-    <option value=" .oO0@">dots</option>
-    <option value="&#9617;&#9617;&#9618;&#9618;&#9619;&#9608;">blocks</option></select></label>
-  <label>Colour <input id="col" type="color" value="#7c3abb"></label>
-  <label>Contrast <input id="gam" type="range" min="30" max="220" value="100"></label>
-  <label>Speed <input id="fps" type="range" min="1" max="30" value="8"></label>
-  <label>Background <select id="bg">
-    <option value="#fdfdfd">light</option>
-    <option value="#0d0d10">dark</option></select></label>
-  <button id="play">Pause</button>
-</div>
-
 <h2>Settings &mdash; copy this back to the agent</h2>
-<div class="cfgwrap"><pre id="cfg"></pre><button id="copy">Copy</button></div>
+<div class="cfgwrap"><pre id="cfg"></pre></div>
 
 <div class="note"><b>How to use this page.</b> Judge the silhouette on the contact sheet, then
-tune the live player. When it looks right press <b>Copy</b> and paste the object into your agent
-chat &mdash; it contains everything needed to bake these exact values into your component.</div>
+tune the player. Everything except <b>Density</b> runs on the baked brightnesses and is
+instant; density resamples the source through ffmpeg, so it takes a moment and rewrites
+the workdir. Press <b>Copy preset</b> and paste the object back into your agent chat.</div>
 </div>
 <script>
-const D = __DATA__;
+let D = __DATA__;
+
+/* One brightness per cell, 0..15, as a string. Decoded once per bake — every
+   control below is a pure function of this array, which is why they are free. */
 const LV = "0123456789abcdef";
-const FR = D.levels.map(s => { const a = new Float32Array(s.length);
-  for (let i = 0; i < s.length; i++) a[i] = LV.indexOf(s[i]) / 15; return a; });
+let FR = [];
+function decode(){
+  FR = D.levels.map(s => { const a = new Float32Array(s.length);
+    for (let i=0;i<s.length;i++) a[i] = LV.indexOf(s[i])/15; return a; });
+}
+decode();
+
 const el = id => document.getElementById(id);
 const hex2rgb = h => [1,3,5].map(i => parseInt(h.slice(i,i+2),16));
+const mix = (a,b,t) => { const A=hex2rgb(a), B=hex2rgb(b);
+  return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*t)).join(",")+")"; };
 
-function draw(cv, f, ramp, rgb, gamma){
-  const dpr = Math.min(2, devicePixelRatio || 1);
+/* Same ramps and the same names as the web panel, so a preset copied from
+   either place means the same thing in the other. */
+const RAMPS = {
+  standard: " .:-=+*#%@",
+  dense: " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$",
+  line: " .,:;i1tfLCG08@",
+  minimal: " .:*#",
+  blocks: " ░▒▓█",
+  shades: " ·░▒▓█",
+  quadrant: " ▖▄▟█",
+  stipple: " .·•●",
+  binary: " 01",
+};
+const DENSITIES = { coarse:56, normal:84, fine:124, finest:168 };
+const PALETTES = {
+  mono:      {ink:"#8a8a88", ink2:"#f1f1f0", bg:"#0d0d0f"},
+  paper:     {ink:"#6b6b78", ink2:"#15151a", bg:"#f4f4f3"},
+  phosphor:  {ink:"#0f766e", ink2:"#5eead4", bg:"#04100d"},
+  amber:     {ink:"#b45309", ink2:"#fbbf24", bg:"#140d02"},
+  ultra:     {ink:"#7c3aed", ink2:"#c4b5fd", bg:"#0f0b1a"},
+  blueprint: {ink:"#1d4ed8", ink2:"#93c5fd", bg:"#050b16"},
+};
+const SPEEDS = [6,10,12,15,20,30,60];
+
+/* A ramp shown as itself. "Standard" says nothing about what you are about to
+   get; the characters do, and they make the number of steps visible too. Long
+   ramps are sampled evenly rather than truncated, so `dense` still reads as a
+   run from empty to solid instead of as its first fourteen punctuation marks. */
+const LABEL_STEPS = 14;
+const rampLabel = s => s.length <= LABEL_STEPS ? s
+  : Array.from({length:LABEL_STEPS}, (_,i) => s[Math.round(i*(s.length-1)/(LABEL_STEPS-1))]).join("");
+
+const S = { ramp:"standard", density:null, contrast:0.85, invert:false,
+            palette:"paper", ink:PALETTES.paper.ink, ink2:PALETTES.paper.ink2,
+            bg:PALETTES.paper.bg, speed:30, playing:true };
+
+/* The bake decides the density; the control starts wherever the workdir is
+   rather than snapping the picture to a preset the moment the page loads. */
+S.density = Object.keys(DENSITIES).find(k => DENSITIES[k] === D.cols) || "custom";
+
+for (const [k,v] of Object.entries(RAMPS)) {
+  const o=document.createElement("option"); o.value=k; o.textContent=rampLabel(v); el("ramp").appendChild(o);
+}
+function fillDensity(){
+  el("density").innerHTML = "";
+  const names = Object.keys(DENSITIES);
+  if (S.density === "custom") names.unshift("custom");
+  for (const k of names) {
+    const o=document.createElement("option"); o.value=k;
+    o.textContent = k === "custom" ? "custom · "+D.cols : k+" · "+DENSITIES[k];
+    el("density").appendChild(o);
+  }
+  el("density").value = S.density;
+  el("density").disabled = !D.canRebake;
+}
+fillDensity();
+for (const k of Object.keys(PALETTES).concat("custom")) {
+  const o=document.createElement("option"); o.value=k;
+  o.textContent = k[0].toUpperCase()+k.slice(1); el("palette").appendChild(o);
+}
+
+function seg(id, labels, get, set){
+  const box = el(id);
+  box.innerHTML = "";
+  labels.forEach((label,i) => {
+    const b=document.createElement("button"); b.textContent=label;
+    b.className = (get() === !!i) ? "on" : "";
+    b.onclick = () => { set(!!i); seg(id,labels,get,set); sync(); };
+    box.appendChild(b);
+  });
+}
+
+/* Monospace is not reliably 0.6em wide — this stack measures otherwise, and
+   guessing overflowed the canvas. Ask the font. */
+let ADVANCE = 0.6;
+function measure(g){
+  g.font = '100px "Geist Mono",ui-monospace,monospace';
+  ADVANCE = g.measureText("M").width / 100;
+}
+
+(() => { const c = document.createElement("canvas").getContext("2d");
+  if (c) measure(c); })();
+
+function draw(cv, f){
+  const ramp = RAMPS[S.ramp], last = ramp.length-1;
   const cw = cv.clientWidth || 260;
-  const cell = cw / D.cols, fs = cell / 0.6, lh = fs * 0.94, ch = lh * D.rows;
+  const dpr = Math.min(2, devicePixelRatio||1);
+  const cell = cw / D.cols, fs = cell / ADVANCE, lh = fs*0.94, ch = lh*D.rows;
   cv.width = Math.round(cw*dpr); cv.height = Math.round(ch*dpr); cv.style.height = ch+"px";
   const g = cv.getContext("2d");
   g.setTransform(dpr,0,0,dpr,0,0);
-  g.clearRect(0,0,cw,ch);
+  g.fillStyle = S.bg; g.fillRect(0,0,cw,ch);
   g.font = fs.toFixed(2)+'px "Geist Mono",ui-monospace,monospace';
   g.textAlign="center"; g.textBaseline="middle";
-  const data = FR[f], last = ramp.length-1;
+
+  /* Colour indexed by ramp position, not by screen position. The faintest
+     character is one colour and the densest is the other, so colour and weight
+     say the same thing instead of cutting across each other. */
+  const band = []; for (let i=0;i<=last;i++) band.push(mix(S.ink, S.ink2, last?i/last:1));
+
+  const data = FR[f];
   for (let r=0;r<D.rows;r++) for (let c=0;c<D.cols;c++){
-    let v = data[r*D.cols+c]; if (v <= 0.02) continue;
-    v = Math.min(1, Math.pow(v, gamma)); if (v < 0.04) continue;
-    g.fillStyle = "rgba("+rgb+","+v.toFixed(3)+")";
-    g.fillText(ramp[Math.round(v*last)], c*cell+cell/2, r*lh+lh/2);
+    let v = data[r*D.cols+c];
+    if (S.invert) v = 1-v;
+    const i = Math.max(0, Math.min(last, Math.round(Math.pow(v, S.contrast)*last)));
+    const chx = ramp[i];
+    if (chx === " ") continue;
+    g.fillStyle = band[i];
+    g.fillText(chx, c*cell+cell/2, r*lh+lh/2);
   }
 }
 
-const sheet = el("sheet");
-const step = Math.max(1, Math.floor(D.count/12));
-const thumbs = [];
-for (let i=0;i<D.count;i+=step){
-  const d=document.createElement("div"); d.className="cell";
-  d.innerHTML="<b>"+String(i).padStart(2,"0")+"</b>";
-  const cv=document.createElement("canvas"); d.appendChild(cv); sheet.appendChild(d);
-  thumbs.push([cv,i]);
+let thumbs = [];
+function buildSheet(){
+  const sheet = el("sheet"); sheet.innerHTML = ""; thumbs = [];
+  const step = Math.max(1, Math.floor(D.count/12));
+  for (let i=0;i<D.count;i+=step){
+    const d=document.createElement("div"); d.className="cell";
+    d.innerHTML="<b>"+String(i).padStart(2,"0")+"</b>";
+    const cv=document.createElement("canvas"); d.appendChild(cv); sheet.appendChild(d);
+    thumbs.push([cv,i]);
+  }
 }
+buildSheet();
 
-let f=0, playing=true, acc=0, last=performance.now();
-const opts = () => [el("ramp").value, hex2rgb(el("col").value).join(","), el("gam").value/100];
+let f=0, acc=0, prev=performance.now();
 function tick(now){
   requestAnimationFrame(tick);
-  const dt = now-last; last = now;
-  if (playing){ acc += dt; const s = 1000/el("fps").value;
-    if (acc >= s){ acc = 0; f = (f+1) % FR.length; } }
-  const [ramp,rgb,gam] = opts();
-  draw(el("stage"), f, ramp, rgb, gam);
+  const dt = now-prev; prev = now;
+  if (S.playing){ acc += dt; const per = 1000/S.speed;
+    if (acc >= per){ acc = 0; f = (f+1) % FR.length; } }
+  draw(el("stage"), f);
 }
-function redrawSheet(){
-  const [ramp,rgb,gam] = opts();
-  for (const [cv,i] of thumbs) draw(cv, i, ramp, rgb, gam);
-}
-function syncCfg(){
-  const [ramp,rgb,gam] = opts();
+
+function sync(){
+  el("sub").textContent = D.count+" frames · grid "+D.cols+"×"+D.rows;
+  document.body.style.background = S.bg;
+  document.querySelectorAll(".cell").forEach(n => n.style.background = S.bg);
+  el("stagewrap").style.background = S.bg;
+  el("v-contrast").textContent = S.contrast.toFixed(2);
+  el("v-speed").textContent = S.speed;
+  el("v-ink").textContent = S.ink.toUpperCase();
+  el("v-ink2").textContent = S.ink2.toUpperCase();
+  el("v-bg").textContent = S.bg.toUpperCase();
+  el("fill-contrast").style.transform = "scaleX("+((S.contrast*100-30)/190)+")";
+  el("fill-speed").style.transform = "scaleX("+(SPEEDS.indexOf(S.speed)/(SPEEDS.length-1))+")";
+  el("ink").value = S.ink; el("ink2").value = S.ink2; el("bg").value = S.bg;
+  el("palette").value = S.palette; el("ramp").value = S.ramp;
   el("cfg").textContent = JSON.stringify({
-    ramp, color: rgb.split(",").map(Number), colorHex: el("col").value,
-    contrast: +gam.toFixed(2), fps: +el("fps").value, background: el("bg").value,
-    frame: f, grid: [D.cols, D.rows], frames: D.count
+    ramp: S.ramp, columns: D.cols, contrast: +S.contrast.toFixed(2), invert: S.invert,
+    ink: [S.ink, S.ink2], background: S.bg, fps: S.speed,
   }, null, 2);
+  for (const [cv,i] of thumbs) draw(cv,i);
 }
-["ramp","col","gam","fps"].forEach(id => el(id).addEventListener("input", () => { syncCfg(); redrawSheet(); }));
-el("bg").addEventListener("input", () => {
-  const v = el("bg").value;
-  document.querySelectorAll(".cell,.stage").forEach(n => n.style.background = v);
-  syncCfg();
-});
+
+el("ramp").onchange = e => { S.ramp = e.target.value; sync(); };
+el("contrast").oninput = e => { S.contrast = e.target.value/100; sync(); };
+el("speed").oninput = e => { S.speed = SPEEDS[+e.target.value]; sync(); };
+el("palette").onchange = e => {
+  const p = PALETTES[e.target.value];
+  S.palette = e.target.value;
+  if (p) { S.ink = p.ink; S.ink2 = p.ink2; S.bg = p.bg; }
+  sync();
+};
+/* Editing a swatch makes the palette custom rather than snapping back to the
+   preset — otherwise every edit is undone by the control that named it. */
+for (const k of ["ink","ink2","bg"]) {
+  el(k).oninput = e => { S[k] = e.target.value; S.palette = "custom"; sync(); };
+}
+seg("invert", ["Off","On"], () => S.invert, v => S.invert = v);
+seg("playing", ["Off","On"], () => S.playing, v => S.playing = v);
+
+el("density").onchange = async e => {
+  const name = e.target.value;
+  if (name === "custom") return;
+  const cols = DENSITIES[name];
+  const prevName = S.density;
+  el("density").disabled = true;
+  el("err").textContent = "";
+  el("stagewrap").classList.add("busy");
+  el("sheet").classList.add("busy");
+  try {
+    const res = await fetch("/rebake", {method:"POST", headers:{"Content-Type":"application/json"},
+                                        body: JSON.stringify({cols})});
+    const next = await res.json();
+    if (!res.ok || next.error) throw new Error(next.error || "rebake failed");
+    D = next; decode(); f = 0;
+    S.density = name;
+    buildSheet();
+  } catch (err) {
+    el("err").textContent = "Density: "+err.message;
+    S.density = prevName;
+  } finally {
+    el("stagewrap").classList.remove("busy");
+    el("sheet").classList.remove("busy");
+    fillDensity();
+    sync();
+  }
+};
+
 el("copy").onclick = async e => {
-  try { await navigator.clipboard.writeText(el("cfg").textContent); }
+  const text = "video2ascii preset\n" + el("cfg").textContent;
+  try { await navigator.clipboard.writeText(text); }
   catch { const r=document.createRange(); r.selectNode(el("cfg"));
     getSelection().removeAllRanges(); getSelection().addRange(r); document.execCommand("copy"); }
   e.target.textContent="Copied"; e.target.classList.add("done");
-  setTimeout(()=>{ e.target.textContent="Copy"; e.target.classList.remove("done"); }, 1400);
+  setTimeout(()=>{ e.target.textContent="Copy preset"; e.target.classList.remove("done"); }, 1400);
 };
-el("play").onclick = e => { playing=!playing; e.target.textContent = playing?"Pause":"Play"; syncCfg(); };
-redrawSheet(); syncCfg(); requestAnimationFrame(tick);
+
+if (!D.canRebake) el("err").textContent =
+  "Density needs a workdir made by a current extract.py or generate.py — re-run the bake to enable it.";
+
+sync(); requestAnimationFrame(tick);
 </script></body></html>

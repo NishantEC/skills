@@ -147,14 +147,23 @@ adjust the crop, mode or floor. Never move on from a bad frame 0.
 python3 ${CLAUDE_SKILL_DIR}/scripts/review.py <workdir> --title "Jellyfish"
 ```
 
-Serves a page on `127.0.0.1:8722` with a contact sheet, a live player, and controls for
-glyph ramp, colour, contrast, speed and background. The user presses **Copy** and pastes
-a settings object back:
+Serves an editor on `127.0.0.1:8722`: a contact sheet, a live player, and every control
+that changes how the grid reads - ramp, density, contrast, invert, palette, the two ink
+colours, background and speed. The user presses **Copy preset** and pastes back:
 
 ```json
-{ "ramp": ".:-=+*#%@", "color": [124, 58, 187], "contrast": 0.68,
-  "fps": 12, "frame": 47, "grid": [84, 50], "frames": 48 }
+{ "ramp": "standard", "columns": 124, "contrast": 0.85, "invert": false,
+  "ink": ["#6b6b78", "#15151a"], "background": "#f4f4f3", "fps": 30 }
 ```
+
+Everything except **Density** is a pure function of the brightnesses already in
+`frames.json`, so it applies instantly with no re-bake. Density is different: changing the
+column count means resampling the source, so the page posts back and the server re-runs
+the command that produced the workdir with a new `--cols`. That command is recorded in
+`frames.json` at bake time, which is why the workdir needs no arguments repeated to it.
+
+A workdir made before that was recorded still opens; density is disabled with a note
+rather than offered and broken.
 
 Do not bake anything until you have that object. This gate is the point of the skill.
 
