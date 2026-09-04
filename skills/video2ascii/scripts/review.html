@@ -210,7 +210,13 @@ function draw(cv, f){
   const cw = cv.clientWidth || 260;
   const dpr = Math.min(2, devicePixelRatio||1);
   const cell = cw / D.cols, fs = cell / ADVANCE, lh = fs*0.94, ch = lh*D.rows;
-  cv.width = Math.round(cw*dpr); cv.height = Math.round(ch*dpr); cv.style.height = ch+"px";
+  /* Assigning width reallocates the backing store and resets the context, so
+     only do it when the size actually changed. Doing it per frame was most of
+     a 224ms frame at 124x74. */
+  const w = Math.round(cw*dpr), h = Math.round(ch*dpr);
+  if (cv.width !== w || cv.height !== h) {
+    cv.width = w; cv.height = h; cv.style.height = ch+"px";
+  }
   const g = cv.getContext("2d");
   g.setTransform(dpr,0,0,dpr,0,0);
   g.fillStyle = S.bg; g.fillRect(0,0,cw,ch);
@@ -247,12 +253,16 @@ function buildSheet(){
 }
 buildSheet();
 
-let f=0, acc=0, prev=performance.now();
+let f=0, acc=0, prev=performance.now(), dirty=true;
 function tick(now){
   requestAnimationFrame(tick);
   const dt = now-prev; prev = now;
   if (S.playing){ acc += dt; const per = 1000/S.speed;
-    if (acc >= per){ acc = 0; f = (f+1) % FR.length; } }
+    if (acc >= per){ acc = 0; f = (f+1) % FR.length; dirty = true; } }
+  /* Redraw on change, not on every refresh. A 30fps clip on a 60Hz display was
+     drawing each frame twice, and a paused one was drawing it forever. */
+  if (!dirty) return;
+  dirty = false;
   draw(el("stage"), f);
 }
 
@@ -274,7 +284,15 @@ function sync(){
     ramp: S.ramp, columns: D.cols, contrast: +S.contrast.toFixed(2), invert: S.invert,
     ink: [S.ink, S.ink2], background: S.bg, fps: S.speed,
   }, null, 2);
-  for (const [cv,i] of thumbs) draw(cv,i);
+  dirty = true;
+  scheduleSheet();
+}
+
+let sheetPending = false;
+function scheduleSheet(){
+  if (sheetPending) return;
+  sheetPending = true;
+  requestAnimationFrame(() => { sheetPending = false; for (const [cv,i] of thumbs) draw(cv,i); });
 }
 
 el("ramp").onchange = e => { S.ramp = e.target.value; sync(); };
@@ -332,7 +350,7 @@ el("copy").onclick = async e => {
 };
 
 if (!D.canRebake) el("err").textContent =
-  "Density needs a workdir made by a current extract.py or generate.py — re-run the bake to enable it.";
+  "Density needs a workdir made by a current extract.py — re-run the bake to enable it.";
 
 sync(); requestAnimationFrame(tick);
 </script></body></html>

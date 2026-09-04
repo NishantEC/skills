@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Serve the editor for a workdir produced by extract.py or generate.py.
+"""Serve the editor for a workdir produced by extract.py.
 
 Contact sheet + live player + every control that changes how the grid reads,
 and a settings object to paste back to the agent. Python stdlib only.
@@ -10,7 +10,7 @@ changing the column count means resampling the source, which needs ffmpeg. That
 is why this is a server and not a file:// page. `POST /rebake` re-runs the
 command that produced the workdir with a different `--cols`.
 
-Re-running a stored command is the same posture as `--expr` in generate.py:
+Re-running a stored command is the same posture as running the extractor itself:
 this is a local authoring tool, pointed at a workdir you just made.
 """
 import argparse

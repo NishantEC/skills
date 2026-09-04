@@ -1,6 +1,6 @@
 ---
 name: video2ascii
-description: Turns a video into an animated ASCII-art asset for a website or app. Extracts frames, isolates the subject, converts each frame to a character-density grid, opens a local review page where a human tunes the glyph ramp, colour, contrast and speed, then bakes the approved settings into a sprite-sheet plus a canvas renderer. Use when the user wants ASCII art from a video or image, an "ASCII animation", a matrix/binary-rain style visual built from real footage or generated from scratch with no source at all, or asks to recreate an ASCII-art effect they saw somewhere. Also use for a single still image that should rotate or pan.
+description: Turns a video into an animated ASCII-art asset for a website or app. Extracts frames, isolates the subject, converts each frame to a character-density grid, opens a local review page where a human tunes the glyph ramp, colour, contrast and speed, then bakes the approved settings into a sprite-sheet plus a canvas renderer. Use when the user wants ASCII art from a video or image, an "ASCII animation", a matrix/binary-rain style visual built from real footage, or asks to recreate an ASCII-art effect they saw somewhere. Also use for a single still image that should rotate or pan.
 license: MIT
 ---
 
@@ -26,7 +26,7 @@ pipx, or a venv.
 Copy this checklist and track it:
 
 ```
-- [ ] 1. Get a source the user is happy with  (or 1b: write a field, no source)
+- [ ] 1. Get a source the user is happy with
 - [ ] 2. Pick a window and auto-crop to the subject
 - [ ] 3. Extract frames, check frame 0 in the terminal
 - [ ] 4. Serve the review page and STOP for human approval
@@ -58,61 +58,6 @@ ffmpeg -loop 1 -i still.jpg -vf \
   "pad=2400:2400:(2400-iw)/2:(2400-ih)/2:color=white,rotate=2*PI*t/8:c=white:ow=2400:oh=2400,scale=1100:1100,format=yuv420p" \
   -t 8 -r 24 spin.mp4 -y
 ```
-
-### 1b. No source at all - write the field
-
-Steps 1-3 exist to turn footage into one thing: a grid of densities per frame.
-When the ask is an *effect* rather than a *subject* - rain, ripples, plasma, a sweep, a
-word dissolving - write that grid directly and skip all three. Everything downstream is
-unchanged, because review, bake and playback only ever see the grid.
-
-```bash
-python3 ${CLAUDE_SKILL_DIR}/scripts/generate.py <workdir> --cols 84 --frames 48 \
-  --expr "max(0.0, 1.0 - 3.0*(((m.atan2(y-0.5,(x-0.5)*1.6) - t) % (2*m.pi))/(2*m.pi)))
-          * max(0.0, 1.0 - 2.0*m.hypot((x-0.5)*1.6, y-0.5))"
-```
-
-The field is `f(x, y, t)`: `x` and `y` run 0..1 across the grid with `y` down, `t` runs
-`0..2*pi` over the loop, and the return is 0..1 (clamped, so do not fight the range).
-Use `--module f.py` defining `field(x, y, t)` when it outgrows one line, or `--preset
-rain|ripples|plasma` for a starting point.
-
-**Write the field to order.** The presets are there to show the shape, not to choose
-from. "Binary rain behind a slow pulse" is a few lines of arithmetic - write it, run it,
-look at frame 0, adjust. The review page in step 4 is still the gate.
-
-**`t` is an angle, so the loop closes exactly.** Build motion from `sin`/`cos` of `t` or
-an integer multiple and the wrap is seamless by construction - measured at 0.97x a normal
-frame step, against a filmed loop that always has a seam. Step 7's three-copy
-interpolation exists to paper over that seam; a generated field never needs it.
-
-**A field is for effects.** Rain, interference, rotation, type and geometry are formulas.
-A jellyfish is not - do not try to write an animal as arithmetic. Draw it instead:
-
-### 1c. Draw the keyframes yourself
-
-```bash
-python3 ${CLAUDE_SKILL_DIR}/scripts/generate.py <workdir> --keyframes keys.txt --frames 48
-```
-
-`keys.txt` is ASCII frames separated by a line of `---`. Draw six or eight; the same
-motion interpolation step 7 uses fills the rest. Six drawn frames of a jellyfish pulsing
-came out as 33, with a median step of 0.094 per cell and the wrap at 1.06x - the
-in-betweens are real, the bell contracting and the tentacles drawing together in frames
-nobody wrote.
-
-**Draw few, interpolate many.** A full sheet is 84x28 x 48 frames: 113,000 characters
-across 1,344 rows that all have to stay aligned while the form deforms. That is where
-writing every frame falls apart. Eight keyframes is a sixth of the tokens and the
-coherence comes from the interpolator instead of from your own consistency.
-
-**Ragged rows are fine.** Rows are padded to the widest and frames to the tallest, because
-trailing spaces get eaten and a short row is not worth another round trip.
-
-**Give the motion something to track.** `minterpolate` estimates in blocks and sees
-nothing at grid resolution - at 24x8 it returned zero frames. The script upscales 16x for
-the estimate and comes back down; a shape that moves a long way between keyframes will
-still tear, so draw more of them rather than fewer.
 
 ### 2. Window and crop
 
