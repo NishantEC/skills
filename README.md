@@ -11,12 +11,12 @@ npx skills add NishantEC/skills
 Or take one without installing it:
 
 ```bash
-npx skills use NishantEC/skills@video-to-ascii
+npx skills use NishantEC/skills@video2ascii
 ```
 
 ## Skills
 
-### `video-to-ascii`
+### `video2ascii`
 
 Turns a video into an animated ASCII asset for a website: extracts frames, isolates the
 subject, converts each to a character-density grid, serves a local review page for a
@@ -51,5 +51,5 @@ the winner back to exact vector by measuring it.
 
 ## Licence
 
-MIT, except `skills/video-to-ascii/demo/`, whose asset derives from a CC BY-SA 3.0
+MIT, except `skills/video2ascii/demo/`, whose asset derives from a CC BY-SA 3.0
 photograph and inherits that licence. See its `ATTRIBUTION.md`.

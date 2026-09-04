@@ -1,5 +1,5 @@
 ---
-name: video-to-ascii
+name: video2ascii
 description: Turns a video into an animated ASCII-art asset for a website or app. Extracts frames, isolates the subject, converts each frame to a character-density grid, opens a local review page where a human tunes the glyph ramp, colour, contrast and speed, then bakes the approved settings into a sprite-sheet plus a canvas renderer. Use when the user wants ASCII art from a video or image, an "ASCII animation", a matrix/binary-rain style visual built from real footage or generated from scratch with no source at all, or asks to recreate an ASCII-art effect they saw somewhere. Also use for a single still image that should rotate or pan.
 license: MIT
 ---

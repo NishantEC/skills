@@ -1,6 +1,6 @@
 # Findings
 
-Measured while building with `video-to-ascii`, not inferred. Each of these cost real
+Measured while building with `video2ascii`, not inferred. Each of these cost real
 time to find, and two of them were self-inflicted.
 
 ## Frame rate must divide the display refresh

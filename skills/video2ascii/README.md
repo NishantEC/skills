@@ -1,4 +1,4 @@
-# video-to-ascii
+# video2ascii
 
 An agent skill that turns a video into an animated ASCII-art asset for a website or app —
 with a human approval step in the middle, on a local page you actually tune by hand.
@@ -16,7 +16,7 @@ result before anything gets baked in.
 ## Install
 
 ```bash
-git clone <this-repo> ~/.claude/skills/video-to-ascii
+git clone <this-repo> ~/.claude/skills/video2ascii
 brew install ffmpeg yt-dlp   # yt-dlp only for YouTube/Vimeo URLs
 ```
 

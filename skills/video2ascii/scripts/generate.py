@@ -73,6 +73,7 @@ ap.add_argument("--floor", type=float, default=0.0, help="below this fraction of
 ap.add_argument("--gamma", type=float, default=1.0, help="<1 lifts midtones, >1 deepens them")
 ap.add_argument("--ramp", default=" .:-=+*#%@")
 a = ap.parse_args()
+os.makedirs(a.workdir, exist_ok=True)
 
 sources = [bool(a.expr), bool(a.module), bool(a.preset), bool(a.keyframes)]
 if sum(sources) != 1:
@@ -174,7 +175,6 @@ for f in range(count):
         "".join(a.ramp[min(len(a.ramp) - 1, int(v * len(a.ramp)))] for v in fr[r * a.cols:(r + 1) * a.cols])
         for r in range(rows)))
 
-os.makedirs(a.workdir, exist_ok=True)
 json.dump({"cols": a.cols, "rows": rows, "count": count, "tileX": tileX,
            "fps": round(a.fps, 2), "levels": levels, "art": art},
           open(os.path.join(a.workdir, "frames.json"), "w"))
