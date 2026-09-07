@@ -14,6 +14,7 @@ Re-running a stored command is the same posture as running the extractor itself:
 this is a local authoring tool, pointed at a workdir you just made.
 """
 import argparse
+import html
 import json
 import os
 import shutil
@@ -32,6 +33,11 @@ a = ap.parse_args()
 
 here = os.path.dirname(os.path.abspath(__file__))
 template = open(os.path.join(here, "review.html")).read()
+# Bundle the pinned vanilla adapter into the response: no external requests.
+for marker, name in (("__DIALKIT_CSS__", "styles.css"),
+                     ("__DIALKIT_JS__", "browser.global.js")):
+    with open(os.path.join(here, "vendor", "dialkit", name)) as asset:
+        template = template.replace(marker, asset.read())
 
 
 def load():
@@ -55,7 +61,7 @@ def payload(data):
 
 def render(data):
     return (template
-            .replace("__TITLE__", a.title)
+            .replace("__TITLE__", html.escape(a.title))
             .replace("__DATA__", json.dumps(payload(data))))
 
 

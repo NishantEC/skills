@@ -94,7 +94,10 @@ python3 ${CLAUDE_SKILL_DIR}/scripts/review.py <workdir> --title "Jellyfish"
 
 Serves an editor on `127.0.0.1:8722`: a contact sheet, a live player, and every control
 that changes how the grid reads - ramp, density, contrast, invert, palette, the two ink
-colours, background and speed. The user presses **Copy preset** and pastes back:
+colours, background and speed. The controls use the bundled **DialKit 2.0.0 vanilla
+adapter**; the Python server embeds its JavaScript and CSS, so no npm install,
+CDN connection, or frontend build is needed. Keep `scripts/vendor/dialkit/` with
+`review.py` and `review.html` when copying the skill. The user presses **Copy preset** and pastes back:
 
 ```json
 { "ramp": "standard", "columns": 124, "contrast": 0.85, "invert": false,

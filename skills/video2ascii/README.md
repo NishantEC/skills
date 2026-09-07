@@ -16,7 +16,7 @@ result before anything gets baked in.
 ## Install
 
 ```bash
-git clone <this-repo> ~/.claude/skills/video2ascii
+npx skills add NishantEC/skills --skill video2ascii
 brew install ffmpeg yt-dlp   # yt-dlp only for YouTube/Vimeo URLs
 ```
 
@@ -48,14 +48,24 @@ review.py    serve the approval page      -> a settings object you copy
 
 `review.py` serves a page on `127.0.0.1:8722`: a contact sheet of frames, a live player,
 and controls for glyph ramp, colour, contrast, speed and background. Tune it, press
-**Copy**, paste the object back to your agent:
+**Copy preset**, paste the object back to your agent:
 
 ```json
-{ "ramp": ".:-=+*#%@", "color": [124, 58, 187], "contrast": 0.68,
-  "fps": 8, "frame": 47, "grid": [84, 50], "frames": 48 }
+{ "ramp": "standard", "columns": 84, "contrast": 0.85, "invert": false,
+  "ink": ["#6b6b78", "#15151a"], "background": "#f4f4f3", "fps": 30 }
 ```
 
-Python stdlib only — no server framework, no build step, nothing to install.
+Controls use **DialKit 2.0.0's vanilla adapter**. Its official browser bundle,
+stylesheet, and MIT license live in `scripts/vendor/dialkit/` and are embedded
+in the page by Python. No React, npm install, CDN, or frontend build is needed;
+the review works offline with system monospace fonts. Copy the entire scripts
+directory when moving it.
+
+Density rebakes through the Python server. It is disabled while a bake runs,
+restores the previous value on failure, and stays unavailable for legacy data
+without the extraction command. Other settings update immediately. Speed offers
+only refresh-friendly rates; the copied preset format is unchanged.
+
 
 ## Output
 
