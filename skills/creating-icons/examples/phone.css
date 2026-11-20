@@ -1,0 +1,12 @@
+.ic-phone [data-part]{transform-box:fill-box;transform-origin:center}
+.ic-phone [data-part="body"]{transform-box:view-box;transform-origin:12px 12px;transition:transform 380ms cubic-bezier(.34,1.45,.64,1),opacity 260ms ease,stroke-dashoffset 380ms ease}
+.ic-phone [data-part="badge"]{transform:scale(0);transform-origin:center;transition:transform 420ms cubic-bezier(.68,-.55,.27,1.55)}
+
+.ic-phone:hover [data-part="body"],:hover>.ic-phone [data-part="body"]{animation:ei-phone-buzz 700ms ease-in-out}
+
+.ic-phone[data-state="on"] [data-part="body"]{transform:rotate(-6deg)}
+.ic-phone[data-state="on"] [data-part="badge"]{transform:scale(1);transition-delay:200ms}
+
+@keyframes ei-phone-buzz{0%,100%{transform:rotate(0)}15%{transform:rotate(-9deg)}30%{transform:rotate(8deg)}45%{transform:rotate(-6deg)}60%{transform:rotate(4deg)}80%{transform:rotate(-1.5deg)}}
+
+@media (prefers-reduced-motion:reduce){.ic-phone [data-part],.ic-phone:hover [data-part],:hover>.ic-phone [data-part]{animation:none!important;transition:none!important}}

@@ -1,23 +1,16 @@
 .ic-copy [data-part]{transform-box:fill-box;transform-origin:center}
+.ic-copy [data-part="front"]{transition:transform 380ms cubic-bezier(.34,1.45,.64,1),opacity 260ms ease,stroke-dashoffset 380ms ease}
+.ic-copy [data-part="back"]{transition:transform 380ms cubic-bezier(.34,1.45,.64,1),opacity 260ms ease,stroke-dashoffset 380ms ease}
+.ic-copy [data-part="badge"]{transform:scale(0);transform-origin:center;transition:transform 420ms cubic-bezier(.68,-.55,.27,1.55)}
 
-.ic-copy:hover [data-part="front"]{animation:ei-copy-front 900ms ease-in-out}
-.ic-copy:hover [data-part="back"]{animation:ei-copy-back 900ms ease-in-out}
+.ic-copy:hover [data-part="front"],:hover>.ic-copy [data-part="front"]{animation:ei-copy-slide 900ms ease-in-out}
+.ic-copy:hover [data-part="back"],:hover>.ic-copy [data-part="back"]{animation:ei-copy-slide 900ms ease-in-out}
 
-.ic-copy[data-state="on"] [data-part="front"]{transform:translate(-0.9px,0.9px)}
-.ic-copy[data-state="on"] [data-part="back"]{transform:translate(0.9px,-0.9px)}
-.ic-copy [data-part]{transition:transform 300ms ease}
+.ic-copy[data-state="on"] [data-part="front"]{transform:translate(-.9px,.9px)}
+.ic-copy[data-state="on"] [data-part="back"]{transform:translate(.9px,-.9px)}
+.ic-copy[data-state="on"] [data-part="badge"]{transform:scale(1);transition-delay:200ms}
 
-@keyframes ei-copy-front{
-  0%,100%{transform:translate(0,0)}
-  36%{transform:translate(-1.8px,1.8px)}
-  66%{transform:translate(.5px,-.5px)}
-}
-@keyframes ei-copy-back{
-  0%,100%{transform:translate(0,0)}
-  36%{transform:translate(1.8px,-1.8px)}
-  66%{transform:translate(-.5px,.5px)}
-}
+@keyframes ei-copy-slide{0%,100%{transform:translate(0,0)}36%{transform:translate(-1.8px,1.8px)}66%{transform:translate(.5px,-.5px)}}
+@keyframes ei-copy-slide{0%,100%{transform:translate(0,0)}36%{transform:translate(1.8px,-1.8px)}66%{transform:translate(-.5px,.5px)}}
 
-@media (prefers-reduced-motion:reduce){
-  .ic-copy [data-part]{animation:none!important;transition:none}
-}
+@media (prefers-reduced-motion:reduce){.ic-copy [data-part],.ic-copy:hover [data-part],:hover>.ic-copy [data-part]{animation:none!important;transition:none!important}}

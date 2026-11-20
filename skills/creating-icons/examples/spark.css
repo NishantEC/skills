@@ -1,0 +1,17 @@
+.ic-spark [data-part]{transform-box:fill-box;transform-origin:center}
+.ic-spark [data-part="big"]{transform-box:view-box;transform-origin:11px 12.5px;transition:transform 380ms cubic-bezier(.34,1.45,.64,1),opacity 260ms ease,stroke-dashoffset 380ms ease}
+.ic-spark [data-part="small"]{transition:transform 380ms cubic-bezier(.34,1.45,.64,1),opacity 260ms ease,stroke-dashoffset 380ms ease}
+.ic-spark [data-part="tiny"]{transition:transform 380ms cubic-bezier(.34,1.45,.64,1),opacity 260ms ease,stroke-dashoffset 380ms ease}
+
+.ic-spark:hover [data-part="big"],:hover>.ic-spark [data-part="big"]{animation:ei-spark-turn 900ms ease-in-out}
+.ic-spark:hover [data-part="small"],:hover>.ic-spark [data-part="small"]{animation:ei-spark-twinkle 900ms ease-in-out}
+.ic-spark:hover [data-part="tiny"],:hover>.ic-spark [data-part="tiny"]{animation:ei-spark-twinkle 900ms ease-in-out 120ms}
+
+.ic-spark[data-state="on"] [data-part="small"]{transform:scale(1.2)}
+.ic-spark[data-state="on"] [data-part="tiny"]{transform:scale(1.2)}
+
+@keyframes ei-spark-turn{0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(90deg) scale(1.12)}}
+@keyframes ei-spark-twinkle{0%,100%{transform:scale(1)}40%{transform:scale(.4)}70%{transform:scale(1.25)}}
+@keyframes ei-spark-twinkle{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+
+@media (prefers-reduced-motion:reduce){.ic-spark [data-part],.ic-spark:hover [data-part],:hover>.ic-spark [data-part]{animation:none!important;transition:none!important}}

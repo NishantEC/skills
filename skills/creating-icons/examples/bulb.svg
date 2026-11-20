@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="ic ic-bulb" fill="none" overflow="visible">
+  <style>
+    .ic-bulb{--g3a:#fcedd2;--g3b:#fadba5;--g2a:#f9d28f;--g2b:#f5ba55;--g1a:#f2a623;--g1b:#c28319;--ln1:#7e5510;--ln2:#b37917;--ln3:#f8cd84;--edge:#b37917;--sh:rgb(242 164 31 / .32);--ring:#fff}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-bulb{--g3a:#db9d45;--g3b:#ba7e1e;--g2a:#fdca87;--g2b:#ed9e05;--g1a:#cd8800;--g1b:#956306;--ln1:#412801;--ln2:#fbb44e;--ln3:#d6a86b;--edge:#ffe3c0;--sh:rgb(0 0 0 / .55);--ring:#18181b}}
+    :root.dark .ic-bulb,:root[data-theme=dark] .ic-bulb{--g3a:#db9d45;--g3b:#ba7e1e;--g2a:#fdca87;--g2b:#ed9e05;--g1a:#cd8800;--g1b:#956306;--ln1:#412801;--ln2:#fbb44e;--ln3:#d6a86b;--edge:#ffe3c0;--sh:rgb(0 0 0 / .55);--ring:#18181b}
+    .ic-bulb .g1a{stop-color:var(--g1a)}.ic-bulb .g1b{stop-color:var(--g1b)}
+    .ic-bulb .g2a{stop-color:var(--g2a)}.ic-bulb .g2b{stop-color:var(--g2b)}
+    .ic-bulb .g3a{stop-color:var(--g3a)}.ic-bulb .g3b{stop-color:var(--g3b)}
+    .ic-bulb .l1{stroke:var(--ln1)}.ic-bulb .l2{stroke:var(--ln2)}.ic-bulb .l3{stroke:var(--ln3)}
+    .ic-bulb .rim{stroke:var(--edge)}.ic-bulb .bd{stroke:var(--ring)}
+    .ic-bulb .sh{flood-color:var(--sh)}
+    .ic-bulb .hl{fill:#fff;fill-opacity:.42}
+    .ic-bulb [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-bulb[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <defs><linearGradient id="ic-bulb-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g1a"/><stop offset="1" class="g1b"/></linearGradient><linearGradient id="ic-bulb-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g2a"/><stop offset="1" class="g2b"/></linearGradient><linearGradient id="ic-bulb-g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g3a"/><stop offset="1" class="g3b"/></linearGradient><filter id="ic-bulb-sh" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.1"/><feOffset dy="1.3" result="o"/><feFlood class="sh"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <g filter="url(#ic-bulb-sh)">
+  <g>
+    <g data-part="glow"><path class="rim" d="M3 11.5a9 9 0 1 0 18 0a9 9 0 1 0 -18 0Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 11.5a9 9 0 1 0 18 0a9 9 0 1 0 -18 0Z" fill="url(#ic-bulb-g3)"/></g>
+    <path class="rim" d="M12 3C15.9 3 18.8 5.8 18.8 9.5C18.8 11.9 17.7 13.5 16.4 14.8C15.8 15.4 15.5 16 15.5 16.8H8.5C8.5 16 8.2 15.4 7.6 14.8C6.3 13.5 5.2 11.9 5.2 9.5C5.2 5.8 8.1 3 12 3Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 3C15.9 3 18.8 5.8 18.8 9.5C18.8 11.9 17.7 13.5 16.4 14.8C15.8 15.4 15.5 16 15.5 16.8H8.5C8.5 16 8.2 15.4 7.6 14.8C6.3 13.5 5.2 11.9 5.2 9.5C5.2 5.8 8.1 3 12 3Z" fill="url(#ic-bulb-g2)"/>
+    <path class="hl" d="M7.3 9.3Q7.4 6.7 10 5.2Q8.8 6.9 8.9 10.4Z"/>
+    <g data-part="filament"><path class="l1" d="M12 16.2V11.8M9.7 9.4Q10.8 11.8 12 11.8Q13.2 11.8 14.3 9.4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <path class="rim" d="M9.6 17.8H14.4Q15.6 17.8 15.6 19V20.3Q15.6 21.5 14.4 21.5H9.6Q8.4 21.5 8.4 20.3V19Q8.4 17.8 9.6 17.8Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.6 17.8H14.4Q15.6 17.8 15.6 19V20.3Q15.6 21.5 14.4 21.5H9.6Q8.4 21.5 8.4 20.3V19Q8.4 17.8 9.6 17.8Z" fill="url(#ic-bulb-g1)"/>
+  </g>
+    <circle data-part="badge" class="bd" cx="19.4" cy="19.4" r="2.6" fill="url(#ic-bulb-g1)" stroke-width="1.2"/>
+  </g>
+</svg>

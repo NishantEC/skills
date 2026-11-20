@@ -1,0 +1,9 @@
+{"name":"receipt","accent":"#5B63E6","edge":"outside","badge":{"cx":19.2,"cy":19.4,"r":2.6},
+"pieces":[
+{"tier":3,"d":"M10 5.5H18.5Q21 5.5 21 8V18.5Q21 21 18.5 21H10Z"},
+{"tier":2,"part":"paper","d":"M7 2.5H16.5Q18.5 2.5 18.5 4.5V20.5L16.3 19.2L14.2 20.5L12 19.2L9.8 20.5L7.7 19.2L5.5 20.5V4Q5.5 2.5 7 2.5Z"},
+{"tier":"gloss","part":"paper","d":"M7.2 4.2H9.6L7.2 7.2Z"},
+{"tier":1,"kind":"line","part":"paper","d":"M8.6 8h6.8M8.6 11.4h6.8M8.6 14.8h3.6","width":1.8}
+],
+"motion":{"hover":[{"part":"paper","move":"print","keyframes":"0%,100%{transform:translateY(0)}35%{transform:translateY(-2.2px)}65%{transform:translateY(.5px)}","duration":900}],
+"on":[{"part":"paper","css":"transform:translateY(-.8px)"}]}}

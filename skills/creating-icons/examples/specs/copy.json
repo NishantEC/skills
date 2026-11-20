@@ -1,0 +1,10 @@
+{"name":"copy","accent":"#8B6CF0","edge":"outside","badge":{"cx":19.2,"cy":19.2,"r":2.6},
+"pieces":[
+{"tier":3,"part":"back","d":"M11.5 3Q9 3 9 5.5V6.5H17.5Q19.5 6.5 19.5 8.5V15H18.5Q21 15 21 12.5V5.5Q21 3 18.5 3Z"},
+{"tier":3,"part":"back","d":"M12 3H18Q21 3 21 6V12Q21 15 18 15H15V8.5Q15 6.5 13 6.5H9V6Q9 3 12 3Z"},
+{"tier":2,"part":"front","d":"M6 8.5H12Q15.5 8.5 15.5 12V18Q15.5 21.5 12 21.5H6Q3 21.5 3 18V12Q3 8.5 6 8.5Z"},
+{"tier":"gloss","part":"front","d":"M5 11.2Q5 10.3 6 10.3H10.5Q8 11 5 14Z"},
+{"tier":1,"kind":"line","part":"front","d":"M6.2 14.2h6.1M6.2 17.4h3.8","width":1.8}
+],
+"motion":{"hover":[{"part":"front","move":"slide","keyframes":"0%,100%{transform:translate(0,0)}36%{transform:translate(-1.8px,1.8px)}66%{transform:translate(.5px,-.5px)}"},{"part":"back","move":"slide","keyframes":"0%,100%{transform:translate(0,0)}36%{transform:translate(1.8px,-1.8px)}66%{transform:translate(-.5px,.5px)}"}],
+"on":[{"part":"front","css":"transform:translate(-.9px,.9px)"},{"part":"back","css":"transform:translate(.9px,-.9px)"}]}}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="gl gl-sidebar" fill="none">
+  <style>
+    .gl-sidebar{color:var(--icon-ink,#27272a)}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .gl-sidebar{color:var(--icon-ink,#e4e4e7)}}
+    :root.dark .gl-sidebar,:root[data-theme=dark] .gl-sidebar{color:var(--icon-ink,#e4e4e7)}
+  </style>
+  <path d="M3.5 7Q3.5 4.5 6 4.5H9.5V19.5H6Q3.5 19.5 3.5 17Z" fill="currentColor" fill-opacity=".22"/>
+  <path d="M3.5 7Q3.5 4.5 6 4.5H18Q20.5 4.5 20.5 7V17Q20.5 19.5 18 19.5H6Q3.5 19.5 3.5 17ZM9.5 4.5V19.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

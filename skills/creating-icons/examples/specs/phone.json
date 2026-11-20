@@ -1,0 +1,9 @@
+{"name":"phone","accent":"#E85AA0","edge":"outside","badge":{"cx":18.6,"cy":4.6,"r":2.6},
+"pieces":[
+{"tier":2,"part":"body","d":"M9.5 2.5H14.5Q17.5 2.5 17.5 5.5V18.5Q17.5 21.5 14.5 21.5H9.5Q6.5 21.5 6.5 18.5V5.5Q6.5 2.5 9.5 2.5Z"},
+{"tier":3,"part":"body","d":"M9.7 5H14.3Q15.5 5 15.5 6.2V16.3Q15.5 17.5 14.3 17.5H9.7Q8.5 17.5 8.5 16.3V6.2Q8.5 5 9.7 5Z"},
+{"tier":"gloss","part":"body","d":"M9.2 13.6L13.6 6H15V7.1L10.2 15.2Z"},
+{"tier":1,"kind":"line","part":"body","d":"M10.6 19.4h2.8","width":1.6}
+],
+"motion":{"hover":[{"part":"body","move":"buzz","box":"view","origin":"12px 12px","keyframes":"0%,100%{transform:rotate(0)}15%{transform:rotate(-9deg)}30%{transform:rotate(8deg)}45%{transform:rotate(-6deg)}60%{transform:rotate(4deg)}80%{transform:rotate(-1.5deg)}","duration":700}],
+"on":[{"part":"body","box":"view","origin":"12px 12px","css":"transform:rotate(-6deg)"}]}}

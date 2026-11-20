@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="ic ic-phone" fill="none" overflow="visible">
+  <style>
+    .ic-phone{--g3a:#fadeec;--g3b:#f6bdd9;--g2a:#f4add0;--g2b:#ee82b7;--g1a:#e85da2;--g1b:#ba4880;--ln1:#792f53;--ln2:#ac4376;--ln3:#f2a4cb;--edge:#ac4376;--sh:rgb(232 90 160 / .32);--ring:#fff}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-phone{--g3a:#f27fb3;--g3b:#cf6094;--g2a:#ffbfd9;--g2b:#fc83ba;--g1a:#f253a4;--g1b:#c01d79;--ln1:#570033;--ln2:#fca6cb;--ln3:#e992b8;--edge:#ffddea;--sh:rgb(0 0 0 / .55);--ring:#18181b}}
+    :root.dark .ic-phone,:root[data-theme=dark] .ic-phone{--g3a:#f27fb3;--g3b:#cf6094;--g2a:#ffbfd9;--g2b:#fc83ba;--g1a:#f253a4;--g1b:#c01d79;--ln1:#570033;--ln2:#fca6cb;--ln3:#e992b8;--edge:#ffddea;--sh:rgb(0 0 0 / .55);--ring:#18181b}
+    .ic-phone .g1a{stop-color:var(--g1a)}.ic-phone .g1b{stop-color:var(--g1b)}
+    .ic-phone .g2a{stop-color:var(--g2a)}.ic-phone .g2b{stop-color:var(--g2b)}
+    .ic-phone .g3a{stop-color:var(--g3a)}.ic-phone .g3b{stop-color:var(--g3b)}
+    .ic-phone .l1{stroke:var(--ln1)}.ic-phone .l2{stroke:var(--ln2)}.ic-phone .l3{stroke:var(--ln3)}
+    .ic-phone .rim{stroke:var(--edge)}.ic-phone .bd{stroke:var(--ring)}
+    .ic-phone .sh{flood-color:var(--sh)}
+    .ic-phone .hl{fill:#fff;fill-opacity:.42}
+    .ic-phone [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-phone[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <defs><linearGradient id="ic-phone-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g1a"/><stop offset="1" class="g1b"/></linearGradient><linearGradient id="ic-phone-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g2a"/><stop offset="1" class="g2b"/></linearGradient><linearGradient id="ic-phone-g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g3a"/><stop offset="1" class="g3b"/></linearGradient><filter id="ic-phone-sh" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.1"/><feOffset dy="1.3" result="o"/><feFlood class="sh"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <g filter="url(#ic-phone-sh)">
+  <g>
+    <g data-part="body"><path class="rim" d="M9.5 2.5H14.5Q17.5 2.5 17.5 5.5V18.5Q17.5 21.5 14.5 21.5H9.5Q6.5 21.5 6.5 18.5V5.5Q6.5 2.5 9.5 2.5Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.5 2.5H14.5Q17.5 2.5 17.5 5.5V18.5Q17.5 21.5 14.5 21.5H9.5Q6.5 21.5 6.5 18.5V5.5Q6.5 2.5 9.5 2.5Z" fill="url(#ic-phone-g2)"/><path class="rim" d="M9.7 5H14.3Q15.5 5 15.5 6.2V16.3Q15.5 17.5 14.3 17.5H9.7Q8.5 17.5 8.5 16.3V6.2Q8.5 5 9.7 5Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.7 5H14.3Q15.5 5 15.5 6.2V16.3Q15.5 17.5 14.3 17.5H9.7Q8.5 17.5 8.5 16.3V6.2Q8.5 5 9.7 5Z" fill="url(#ic-phone-g3)"/><path class="hl" d="M9.2 13.6L13.6 6H15V7.1L10.2 15.2Z"/><path class="l1" d="M10.6 19.4h2.8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g>
+  </g>
+    <circle data-part="badge" class="bd" cx="18.6" cy="4.6" r="2.6" fill="url(#ic-phone-g1)" stroke-width="1.2"/>
+  </g>
+</svg>

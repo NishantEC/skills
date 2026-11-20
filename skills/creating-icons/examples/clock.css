@@ -1,0 +1,15 @@
+.ic-clock [data-part]{transform-box:fill-box;transform-origin:center}
+.ic-clock [data-part="minute"]{transform-box:view-box;transform-origin:12px 13px;transition:transform 380ms cubic-bezier(.34,1.45,.64,1),opacity 260ms ease,stroke-dashoffset 380ms ease}
+.ic-clock [data-part="bells"]{transform-box:view-box;transform-origin:12px 13px;transition:transform 380ms cubic-bezier(.34,1.45,.64,1),opacity 260ms ease,stroke-dashoffset 380ms ease}
+.ic-clock [data-part="badge"]{transform:scale(0);transform-origin:center;transition:transform 420ms cubic-bezier(.68,-.55,.27,1.55)}
+
+.ic-clock:hover [data-part="minute"],:hover>.ic-clock [data-part="minute"]{animation:ei-clock-sweep 1000ms cubic-bezier(.4,0,.2,1)}
+.ic-clock:hover [data-part="bells"],:hover>.ic-clock [data-part="bells"]{animation:ei-clock-ring 700ms ease-in-out}
+
+.ic-clock[data-state="on"] [data-part="minute"]{transform:rotate(120deg)}
+.ic-clock[data-state="on"] [data-part="badge"]{transform:scale(1);transition-delay:200ms}
+
+@keyframes ei-clock-sweep{0%{transform:rotate(0)}80%{transform:rotate(375deg)}100%{transform:rotate(360deg)}}
+@keyframes ei-clock-ring{0%,100%{transform:rotate(0)}20%{transform:rotate(-7deg)}40%{transform:rotate(6deg)}60%{transform:rotate(-4deg)}80%{transform:rotate(2deg)}}
+
+@media (prefers-reduced-motion:reduce){.ic-clock [data-part],.ic-clock:hover [data-part],:hover>.ic-clock [data-part]{animation:none!important;transition:none!important}}

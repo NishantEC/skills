@@ -1,152 +1,77 @@
 ---
 name: creating-icons
-description: Use when asked to draw, redraw or extend a UI icon set — colour layered icons for objects and features, mono "duo line" glyphs for controls, light and dark paints, optional hover motion and on/off states — and deliver standalone SVG (plus optional CSS) files that drop into any project.
+description: Use when asked to draw, redraw or extend a UI icon set. Colour layered icons for objects and features (depth, rim, shadow, gloss, hover motion, on/off state) and mono "duo line" glyphs for controls, in light and dark, delivered as standalone SVG plus CSS that drop into any project.
 ---
 
 # Creating Icons
 
-You are drawing a family, not a one-off. Every icon you add must look like it came from
-the same hand as the others: same grid, same weights, same accent logic. If the project
-already has icons, read three of them first and match them. If it has none, use the
-specs below exactly.
+You draw a family, not a one-off. Every icon must look like the same hand drew it. If the
+project already has icons, read three first and match them. If not, use this skill exactly.
 
-## Pick the kind first
+You write only geometry. `scripts/compose.mjs` turns a small JSON spec into the finished
+SVG (gradients, rim, shadow, gloss, masks, light and dark paints) and the motion CSS. Do
+not hand-write that boilerplate.
 
-| Kind | For | Look | Colour |
-| --- | --- | --- | --- |
-| **Colour icon** | Objects and features: file, calendar, rocket, chart, tag, trash, settings | 2 to 3 flat layers on a 24 grid, one accent per icon | Accent family, light and dark paints |
-| **Glyph** | Controls: chevron, caret, arrow, close, plus, minus, check, dots, search, filter, toggle | Mono "duo line": 1.75 stroke, a 22% wash only where there is a real body, round dots | `currentColor`, follows text and theme |
+## Pick the kind
 
-Hard rules:
-- Controls are never coloured. Objects always are. A coloured chevron or x looks wrong.
-- Name the file by what it depicts (`chevron-down`, `eye-off`, `calendar`), not by the name in some other icon set.
-- No comments inside the SVG or CSS beyond the paint block.
+| Kind | For | Look |
+| --- | --- | --- |
+| **Colour icon** | Objects and features: calendar, camera, gift, lock, rocket, settings, chart, tag | 4 to 8 pieces in 3 tiers, depth, one accent, hover move, on state |
+| **Glyph** | Controls: chevron, caret, arrow, close, plus, check, dots, search, filter, panel toggle | Mono duo line, 1.75 stroke, `currentColor`, wash only on real bodies |
 
-## Shared rules
+Controls are never coloured. Objects always are. Name files by what they depict.
 
-- `viewBox="0 0 24 24"`, `width="24" height="24"`, `fill="none"` on the root.
-- Live area is 2.5 to 21.5. Optically centre the shape, do not just centre its box. Triangles and arrows sit slightly toward their mass.
-- Round everything: `stroke-linecap="round"`, `stroke-linejoin="round"`, corner radius 1.5 to 3 on shapes. No sharp 90 degree corners except where the object has them (a page corner).
-- Use basic shapes (`rect` with `rx`, `circle`, `path`). No transforms on static geometry, no filters, no gradients, no ids. Flat fills only, so the file survives any renderer and can be inlined many times.
-- One idea per icon. If it needs a third explanatory part, drop the part.
+## Procedure (colour icon)
 
-## Colour icon
+1. **Brief in 4 lines.** Kind, accent family (`references/accents.md`), silhouette archetype (`references/shapes.md`: round, tall, flat, device, abstract, container), and the parts list with a tier for each. Do not ask questions you can answer.
+2. **Build tiers back to front** in `<name>.json` (spec format in `references/spec.md`):
+   - t3 first: the back plate, halo, bezel, second sheet or ghost offset 1.5 to 3 units from the body so it peeks out. This is the required depth cue.
+   - t2 next: the body, the largest shape, 14 to 19 units across, corner radius 3 to 3.5.
+   - t1 last: marks and small parts as lines (width 1.8 to 2, round caps) or shapes. Anything smaller than 3 units is t1, never t2.
+   - one `gloss` piece on the body (upper left, 35 to 45% white), at most one.
+   - symmetric parts: draw one half and add `"mirror":true`; never retype coordinates.
+   - holes (keyhole, gear hole, lens) are `cuts`, not extra layers.
+   - parts that move get `part`; consecutive pieces with the same part share a group.
+3. **Motion in the same spec** (`references/motion.md`): one hover move per icon where one part moves against the rest, an `on` pose, a `badge` for the on state. Colour icons ship motion by default.
+4. **Compose and check:**
+   ```bash
+   node scripts/compose.mjs icons/gift.json icons      # writes gift.svg and gift.css
+   node scripts/paints.mjs '#F2643F'                   # contrast table, must say all targets met
+   node scripts/check.mjs icons                        # static rules
+   ```
+5. **Review loop (mandatory, `references/review.md`).** Render, look at the image, fix, render again. At least one fix round, or write down why none was needed:
+   ```bash
+   node scripts/preview.mjs icons icons/preview.html --png icons/preview.png
+   ```
+   The PNG shows 16, 24, 48 and 96px on light and dark, plus off, on, mid-move and hover cells. Open it with the image viewer. If the machine has a shared browser, add `--cdp <endpoint>` instead of letting the script start Chrome.
+6. Deliver `<name>.svg`, `<name>.css`, the spec, and say which accent family you used.
 
-### Layers
+## Hard rules for colour icons
 
-Draw back to front. Each layer is one flat fill class.
+Checked by `scripts/check.mjs` where marked (c).
 
-| Tier | Class | Role | Paint |
-| --- | --- | --- | --- |
-| 3 | `t3` | Back plate, shadow shape, container behind the subject | very pale tint of the accent |
-| 2 | `t2` | The body of the object | mid tint of the accent |
-| 1 | `t1` | The marking: strokes, slats, text lines, small details | dark accent, as fill or as 1.8 stroke |
+- 24 grid, live area 2.5 to 21.5 (c). The main mass spans at least 16 units on its long axis (c warns below).
+- At least 4 pieces and all three tiers used (c). At most 12 pieces (c warns above 14).
+- A t3 piece that peeks beyond the body by 1.5 to 3 units on at least one side, or a full halo or bezel.
+- Smallest feature 1.5 units, smallest gap 1.5. Shapes under 3 units across are t1. Details at 16px: at most 3 interior marks; at 24px at most 6.
+- Roundness: body corners 3 to 3.5, small parts 1.2 to 1.5, no sharp corner except where the object has one (a paper corner, a spark tip).
+- Lines are width 1.8 to 2 with round caps, in t1 (a t2 line such as a shackle may be width 2).
+- Paints come only from `paints.mjs` via compose. Never hand-pick hex values, never set colours in the spec.
+- Dark mode: marks keep 3:1 against the body, the rim keeps 8:1 against the panel (paints.mjs prints both). If an accent fails, change the accent's lightness to 55 to 65%, not the maths.
+- Motion (c): a `data-part`, hover keyframes named `ei-<icon>-<move>`, an `on` pose, a reduced-motion block. Animate only transform, opacity, stroke-dashoffset. 700 to 1100ms. Last frame equals first.
+- Unique ids: compose prefixes every id with `ic-<name>-`. If you inline one icon many times on a page, either use `<img>`/a sprite or give each copy its own suffix, because gradient colours resolve in the first copy.
 
-Most icons have two layers (t3 + t2, or t2 + t1 lines) and some have all three. Never
-four. Details are strokes at width 1.8 with round caps, never tiny filled shapes: a
-small tier-2 shape reads as a hollow ring at 16px, so a small dot belongs at tier 1.
+## Glyphs
 
-Parts that will move get `data-part="name"` (put a `<g>` around multi-piece parts).
+Spec with `"kind":"glyph"`: `lines` (one path), optional `washes`, optional `dots`. Rules and recipes in `references/glyphs.md`. Stroke 1.75, geometry inside 3 to 21, wash 22% only for a real body, dots r1.5 spaced 6.5, mirror coordinates for symmetric shapes, optical centre not box centre. No motion, no colour.
 
-### Accent and paints
+## References (read as needed)
 
-One accent per icon. Related icons share it so the set groups itself: pick from
-`references/accents.md`, which maps meaning to hue. A new family gets a new hue at
-least 30 degrees from its neighbours, mid-saturation, around 55 to 65% lightness.
-
-Do not eyeball the other paints. Run:
-
-```bash
-node scripts/paints.mjs '#8B6CF0'
-```
-
-It prints the light and dark value for `t1`, `t2`, `t3` and the line colour. The
-maths: light `t3` = accent 58% toward white, `t2` = 32% toward white, `t1` = accent x 0.76;
-dark values are re-lit in OKLCH (lightness 0.34 + 0.54 x source, chroma kept, hue kept)
-so a dark theme never gets a dim or muddy icon. If one icon still looks weak in dark,
-change that icon's accent, not the maths.
-
-### Light and dark in one file
-
-Deliver one SVG with its paints as CSS variables, scoped by a class unique to the icon
-(`ic-<name>`) so many inline copies never collide. Use exactly this block:
-
-```svg
-<style>
-  .ic-copy{--t1:#6a52b6;--t2:#b09bf5;--t3:#cec1f9}
-  @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-copy{--t1:#886be9;--t2:#ab9bfb;--t3:#c6bdfd}}
-  :root.dark .ic-copy,:root[data-theme=dark] .ic-copy{--t1:#886be9;--t2:#ab9bfb;--t3:#c6bdfd}
-  .ic-copy .t1{fill:var(--t1)}.ic-copy .t2{fill:var(--t2)}.ic-copy .t3{fill:var(--t3)}
-  .ic-copy .s1{stroke:var(--t1)}
-</style>
-```
-
-This works as a standalone file or `<img>` (follows the OS), inline in a page (also
-follows a `.dark` class or `data-theme="dark"` on the root, and `light` forces light), and
-needs no build step. Do not ship separate `-light` / `-dark` files unless the user asks.
-
-## Glyph
-
-A control icon. All geometry on the 24 grid inside 3 to 21.
-
-- **Line**: one path, stroke `currentColor`, width **1.75**, round caps and joins. Circles are two arcs or a `circle`.
-- **Wash**: only where the glyph has a real body (a page, box, lens, funnel, panel, screen). `fill="currentColor" fill-opacity=".22"`, same outline as the line. Arrows, chevrons, carets, plus, minus, check and close have no wash.
-- **Dots**: `r="1.5"` filled `currentColor`, spaced 6.5 apart (a three-dot menu sits at x 5.5, 12, 18.5).
-- Never draw a zero-width or zero-height shape (a lone horizontal line as a fill). Use a stroke, or a rounded rect for a minus.
-- Chevrons and carets span about 8 x 5 units and are centred on their optical middle, not their bounding box.
-
-Theme: the root carries a `color` that reads from `--icon-ink` with a light and a dark
-fallback, so the file works alone and an app can restyle it by setting one variable:
-
-```svg
-<style>
-  .gl-search{color:var(--icon-ink,#27272a)}
-  @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .gl-search{color:var(--icon-ink,#e4e4e7)}}
-  :root.dark .gl-search,:root[data-theme=dark] .gl-search{color:var(--icon-ink,#e4e4e7)}
-</style>
-```
-
-Colour icons use the `ic-` class prefix, glyphs `gl-`. When a user wants the glyph to
-inherit the surrounding text colour inline, they delete the `<style>` block.
-
-## Motion (optional, ask or infer)
-
-Write it as a separate `<name>.css` beside the SVG. Skip it unless asked or the brief
-says "animated", "hover" or "states". Glyphs get no motion.
-
-- **Hover move**: the object does its own thing (a lid lifts, a card slides, a plane takes off and returns). One part moves against the rest. 700 to 1100ms.
-- **States**: `data-state="on"` on the svg. "Off" is the resting drawing. "On" is a new pose reached by a transition (about 300ms), and loops only while something is truly ongoing, slow.
-- Keyframes: `ei-<icon>-<move>` for hover, `es-<icon>-<loop>` for state loops. The last frame equals the first so the loop seam is invisible. A symmetric icon spins to an identical pose (plus turns 180, not 90).
-- Animate only `transform`, `opacity` and `stroke-dashoffset`. Set `transform-box:fill-box` and a `transform-origin` in percent on the part.
-- Scope every rule by `.ic-<name>` and select parts with `[data-part="..."]`.
-- Always end with a `prefers-reduced-motion:reduce` block that sets `animation:none` and `transition:none`.
-
-See `examples/copy.css` and `examples/trash.css`.
-
-## Process
-
-1. Read the brief. State the kind, the accent (and why that family), and the 2 or 3 layers in one sentence each. Do not ask questions you can answer.
-2. Write `<name>.svg` (and `<name>.css` if motion). Run `scripts/paints.mjs` for the paints.
-3. Preview: `node scripts/preview.mjs <dir> preview.html` builds a grid of every SVG at 16, 24 and 48px on light and dark panels. Look at it. Open it in a browser and screenshot it if you can.
-4. Run the self-check, fix, repeat once. Do not stop at the first draft.
-
-## Self-check
-
-- Legible at 16px: no feature thinner than 1.5 units at 24, no gap tighter than 1.5.
-- Same visual weight as the examples: put it next to `examples/` in the preview.
-- Optically balanced and inside 2.5 to 21.5 (3 to 21 for glyphs).
-- Colour icon: at most 3 layers, strokes 1.8, flat fills, one accent, reads on both panels.
-- Glyph: `currentColor` only, 1.75 stroke, wash only if it has a body, never coloured.
-- Dark panel: lines (`t1`) still separate from the body (`t2`). If not, raise the body or lower the line.
-- File is self-contained: no external refs, no ids, no comments, valid XML (`xmllint --noout` if available).
-- Symmetric objects (funnel, headphones, rocket body) mirror exactly around x=12: compare the coordinates of both halves.
-- Name says what it depicts.
-
-## Deliver
-
-`<name>.svg` per icon, plus `<name>.css` when it moves, in the folder the user names
-(default `./icons/`). Plus `preview.html` if you built one. Say which accent family you
-used so the next icon can match.
-
-Worked examples: `examples/copy.svg` (two layers + marking), `examples/trash.svg`
-(three tiers, moving lid), `examples/search.svg` (glyph with wash).
+- `references/bar.md`: what separates a rich icon from a flat one, with numbers. Read first.
+- `references/spec.md`: the JSON spec, every field.
+- `references/shapes.md`: archetype recipes with coordinates and proportions.
+- `references/motion.md`: hover and state recipes to copy.
+- `references/glyphs.md`: glyph recipes.
+- `references/review.md`: the render-and-fix checklist.
+- `references/accents.md`: meaning to hue.
+- `examples/`: seven colour icons (`copy` two sheets, `trash` lid, `clock` round, `bulb` tall, `receipt` flat document, `phone` device, `spark` abstract) and three glyphs (`search`, `arrow-right`, `sidebar`). Each has its `specs/<name>.json`. Copy the nearest archetype and change it; do not start from nothing.
