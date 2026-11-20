@@ -1,0 +1,14 @@
+.ic-trash [data-part="lid"]{transform-box:fill-box;transform-origin:12% 100%;transition:transform 300ms cubic-bezier(.34,1.5,.64,1)}
+
+.ic-trash:hover [data-part="lid"]{animation:ei-trash-lid 1000ms ease-in-out}
+.ic-trash[data-state="on"] [data-part="lid"]{transform:translateY(-.8px) rotate(-9deg)}
+
+@keyframes ei-trash-lid{
+  0%,100%{transform:translateY(0) rotate(0)}
+  30%,50%{transform:translateY(-1.6px) rotate(-18deg)}
+  72%{transform:translateY(.3px) rotate(1.5deg)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ic-trash [data-part="lid"]{animation:none!important;transition:none}
+}

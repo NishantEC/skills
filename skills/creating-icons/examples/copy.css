@@ -1,0 +1,23 @@
+.ic-copy [data-part]{transform-box:fill-box;transform-origin:center}
+
+.ic-copy:hover [data-part="front"]{animation:ei-copy-front 900ms ease-in-out}
+.ic-copy:hover [data-part="back"]{animation:ei-copy-back 900ms ease-in-out}
+
+.ic-copy[data-state="on"] [data-part="front"]{transform:translate(-0.9px,0.9px)}
+.ic-copy[data-state="on"] [data-part="back"]{transform:translate(0.9px,-0.9px)}
+.ic-copy [data-part]{transition:transform 300ms ease}
+
+@keyframes ei-copy-front{
+  0%,100%{transform:translate(0,0)}
+  36%{transform:translate(-1.8px,1.8px)}
+  66%{transform:translate(.5px,-.5px)}
+}
+@keyframes ei-copy-back{
+  0%,100%{transform:translate(0,0)}
+  36%{transform:translate(1.8px,-1.8px)}
+  66%{transform:translate(-.5px,.5px)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ic-copy [data-part]{animation:none!important;transition:none}
+}
