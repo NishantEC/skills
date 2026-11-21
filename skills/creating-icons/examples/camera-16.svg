@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="ic ic-camera ic-sm" fill="none" overflow="visible">
+  <style>
+    .ic-camera{--g3a:#e8e2fc;--g3b:#d1c4f9;--g2a:#c5b6f8;--g2b:#a78ff4;--g1a:#8d6ff0;--g1b:#6f56c0;--ln1:#48387d;--ln2:#6750b2;--ln3:#bfaef7;--edge:#6750b2;--sh:rgb(139 108 240 / .32);--ring:#fff}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-camera{--g3a:#ab99fe;--g3b:#8d79e1;--g2a:#d3cdfe;--g2b:#b1a2fb;--g1a:#9a81fa;--g1b:#744bdc;--ln1:#35007a;--ln2:#c3bafc;--ln3:#b1a4f4;--edge:#e7e4ff;--sh:rgb(0 0 0 / .55);--ring:#18181b}}
+    :root.dark .ic-camera,:root[data-theme=dark] .ic-camera{--g3a:#ab99fe;--g3b:#8d79e1;--g2a:#d3cdfe;--g2b:#b1a2fb;--g1a:#9a81fa;--g1b:#744bdc;--ln1:#35007a;--ln2:#c3bafc;--ln3:#b1a4f4;--edge:#e7e4ff;--sh:rgb(0 0 0 / .55);--ring:#18181b}
+    .ic-camera .g1a{stop-color:var(--g1a)}.ic-camera .g1b{stop-color:var(--g1b)}
+    .ic-camera .g2a{stop-color:var(--g2a)}.ic-camera .g2b{stop-color:var(--g2b)}
+    .ic-camera .g3a{stop-color:var(--g3a)}.ic-camera .g3b{stop-color:var(--g3b)}
+    .ic-camera .l1{stroke:var(--ln1)}.ic-camera .l2{stroke:var(--ln2)}.ic-camera .l3{stroke:var(--ln3)}
+    .ic-camera .rim{stroke:var(--edge)}.ic-camera .bd{stroke:var(--ring)}
+    .ic-camera .sh{flood-color:var(--sh)}
+    .ic-camera .hl{fill:#fff;fill-opacity:.42}
+    .ic-camera [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-camera[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <defs><linearGradient id="ic-camera-sm-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g1a"/><stop offset="1" class="g1b"/></linearGradient><linearGradient id="ic-camera-sm-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g2a"/><stop offset="1" class="g2b"/></linearGradient><linearGradient id="ic-camera-sm-g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g3a"/><stop offset="1" class="g3b"/></linearGradient><filter id="ic-camera-sm-sh" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.1"/><feOffset dy="1.3" result="o"/><feFlood class="sh"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <g filter="url(#ic-camera-sm-sh)">
+  <g>
+    <path class="rim" d="M8.5 4.5H14Q15.5 4.5 15.5 6V9H7V6Q7 4.5 8.5 4.5Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.5 4.5H14Q15.5 4.5 15.5 6V9H7V6Q7 4.5 8.5 4.5Z" fill="url(#ic-camera-sm-g3)"/>
+    <path class="rim" d="M2.5 10.5Q2.5 7.5 5.5 7.5H18.5Q21.5 7.5 21.5 10.5V17.5Q21.5 20.5 18.5 20.5H5.5Q2.5 20.5 2.5 17.5Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M2.5 10.5Q2.5 7.5 5.5 7.5H18.5Q21.5 7.5 21.5 10.5V17.5Q21.5 20.5 18.5 20.5H5.5Q2.5 20.5 2.5 17.5Z" fill="url(#ic-camera-sm-g2)"/>
+    <g data-part="lens"><path class="rim" d="M7.8 14a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0 -8.4 0Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M7.8 14a4.2 4.2 0 1 0 8.4 0a4.2 4.2 0 1 0 -8.4 0Z" fill="url(#ic-camera-sm-g1)"/></g>
+    <g data-part="iris"><path class="rim" d="M9.4 14a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.4 14a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z" fill="url(#ic-camera-sm-g3)"/></g>
+    <path class="rim" d="M17 11a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0 -2.6 0Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M17 11a1.3 1.3 0 1 0 2.6 0a1.3 1.3 0 1 0 -2.6 0Z" fill="url(#ic-camera-sm-g1)"/>
+  </g>
+    <circle data-part="badge" class="bd" cx="19.6" cy="4.3" r="2.4" fill="url(#ic-camera-sm-g1)" stroke-width="1.2"/>
+  </g>
+</svg>

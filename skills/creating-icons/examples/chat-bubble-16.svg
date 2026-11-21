@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="ic ic-chat-bubble ic-sm" fill="none" overflow="visible">
+  <style>
+    .ic-chat-bubble{--g3a:#fadeec;--g3b:#f6bdd9;--g2a:#f4add0;--g2b:#ee82b7;--g1a:#e85da2;--g1b:#ba4880;--ln1:#792f53;--ln2:#ac4376;--ln3:#f2a4cb;--edge:#ac4376;--sh:rgb(232 90 160 / .32);--ring:#fff}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-chat-bubble{--g3a:#f27fb3;--g3b:#cf6094;--g2a:#ffbfd9;--g2b:#fc83ba;--g1a:#f253a4;--g1b:#c01d79;--ln1:#570033;--ln2:#fca6cb;--ln3:#e992b8;--edge:#ffddea;--sh:rgb(0 0 0 / .55);--ring:#18181b}}
+    :root.dark .ic-chat-bubble,:root[data-theme=dark] .ic-chat-bubble{--g3a:#f27fb3;--g3b:#cf6094;--g2a:#ffbfd9;--g2b:#fc83ba;--g1a:#f253a4;--g1b:#c01d79;--ln1:#570033;--ln2:#fca6cb;--ln3:#e992b8;--edge:#ffddea;--sh:rgb(0 0 0 / .55);--ring:#18181b}
+    .ic-chat-bubble .g1a{stop-color:var(--g1a)}.ic-chat-bubble .g1b{stop-color:var(--g1b)}
+    .ic-chat-bubble .g2a{stop-color:var(--g2a)}.ic-chat-bubble .g2b{stop-color:var(--g2b)}
+    .ic-chat-bubble .g3a{stop-color:var(--g3a)}.ic-chat-bubble .g3b{stop-color:var(--g3b)}
+    .ic-chat-bubble .l1{stroke:var(--ln1)}.ic-chat-bubble .l2{stroke:var(--ln2)}.ic-chat-bubble .l3{stroke:var(--ln3)}
+    .ic-chat-bubble .rim{stroke:var(--edge)}.ic-chat-bubble .bd{stroke:var(--ring)}
+    .ic-chat-bubble .sh{flood-color:var(--sh)}
+    .ic-chat-bubble .hl{fill:#fff;fill-opacity:.42}
+    .ic-chat-bubble [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-chat-bubble[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <defs><linearGradient id="ic-chat-bubble-sm-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g1a"/><stop offset="1" class="g1b"/></linearGradient><linearGradient id="ic-chat-bubble-sm-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g2a"/><stop offset="1" class="g2b"/></linearGradient><linearGradient id="ic-chat-bubble-sm-g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g3a"/><stop offset="1" class="g3b"/></linearGradient><filter id="ic-chat-bubble-sm-sh" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.1"/><feOffset dy="1.3" result="o"/><feFlood class="sh"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <g filter="url(#ic-chat-bubble-sm-sh)">
+  <g>
+    <g data-part="back"><path class="rim" d="M10.5 3.5H18Q21.5 3.5 21.5 7V15.4Q21.5 16.4 20.7 15.8L18 13.5H10.5Q7 13.5 7 10V7Q7 3.5 10.5 3.5Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M10.5 3.5H18Q21.5 3.5 21.5 7V15.4Q21.5 16.4 20.7 15.8L18 13.5H10.5Q7 13.5 7 10V7Q7 3.5 10.5 3.5Z" fill="url(#ic-chat-bubble-sm-g3)"/></g>
+    <path class="rim" d="M6 6.5H15Q18.5 6.5 18.5 10V14Q18.5 17.5 15 17.5H10L6.2 20.8Q5.3 21.5 5.3 20.4V17.4Q2.5 17 2.5 14V10Q2.5 6.5 6 6.5Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 6.5H15Q18.5 6.5 18.5 10V14Q18.5 17.5 15 17.5H10L6.2 20.8Q5.3 21.5 5.3 20.4V17.4Q2.5 17 2.5 14V10Q2.5 6.5 6 6.5Z" fill="url(#ic-chat-bubble-sm-g2)"/>
+    <g data-part="dot1"><path class="l1" d="M6.5 10.5h8M6.5 13.6h4.6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+  </g>
+    <circle data-part="badge" class="bd" cx="19.4" cy="19.6" r="2.5" fill="url(#ic-chat-bubble-sm-g1)" stroke-width="1.2"/>
+  </g>
+</svg>

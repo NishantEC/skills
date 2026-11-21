@@ -2,7 +2,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
 import { paintsFor } from "./paints.mjs";
-import { mirrorPath } from "./lib/path.mjs";
+import { mirrorPath, bbox } from "./lib/path.mjs";
 
 const usage = `usage: node compose.mjs <spec.json> [outDir]
 Writes <name>.svg (and <name>.css when the spec has "motion") next to the spec or into outDir.`;
@@ -44,38 +44,70 @@ function expand(pieces) {
   return out;
 }
 
-function composeIcon() {
+function resolveSmall(pieces) {
+  const out = [];
+  for (const p of pieces) {
+    if (p.tier === "gloss") {
+      if (p.sm === true) out.push(p);
+      continue;
+    }
+    if (p.sm === false) continue;
+    const q = p.sm && typeof p.sm === "object" ? { ...p, ...p.sm } : { ...p };
+    delete q.sm;
+    if (q.kind === "line") q.width = Math.max(q.width || 1.8, 2);
+    out.push(q);
+  }
+  return out;
+}
+
+function smallWarnings(pieces) {
+  const warns = [];
+  const t1 = pieces.filter((p) => p.tier === 1).length;
+  if (t1 > 3) warns.push(`${t1} tier-1 pieces at 16px (max 3): mark more with "sm":false`);
+  if (!pieces.some((p) => p.tier === 3)) warns.push("no tier-3 piece at 16px: keep one depth cue");
+  for (const p of pieces) {
+    if (p.kind === "line" || p.tier === "gloss") continue;
+    const b = bbox(p.d);
+    const w = Math.min(b.x1 - b.x0, b.y1 - b.y0);
+    if (w < 2.5) warns.push(`a tier-${p.tier}${p.part ? ` "${p.part}"` : ""} shape is ${w.toFixed(1)} units on its narrow axis: under 2.5 it vanishes at 16px, grow it with an "sm" override`);
+  }
+  return warns;
+}
+
+function composeIcon(small = false) {
   const c = `ic-${name}`;
+  const idp = small ? `ic-${name}-sm` : c;
   const edge = spec.edge || "outside";
   const { light, dark } = paintsFor(spec.accent);
   const vars = (p) => Object.entries(p).map(([k, v]) => `--${k}:${v}`).join(";");
   const ring = { light: "#fff", dark: "#18181b" };
-  const pieces = expand(spec.pieces);
+  const pieces = expand(small ? resolveSmall(spec.pieces) : spec.pieces);
+  if (small) for (const w of smallWarnings(pieces)) console.error(`warn ${name}-16: ${w}`);
   const clips = [];
   let defs = "";
   for (const t of [1, 2, 3]) {
-    defs += `<linearGradient id="${c}-g${t}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g${t}a"/><stop offset="1" class="g${t}b"/></linearGradient>`;
+    defs += `<linearGradient id="${idp}-g${t}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g${t}a"/><stop offset="1" class="g${t}b"/></linearGradient>`;
   }
-  defs += `<filter id="${c}-sh" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.1"/><feOffset dy="1.3" result="o"/><feFlood class="sh"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
-  const cuts = spec.cuts || [];
+  defs += `<filter id="${idp}-sh" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.1"/><feOffset dy="1.3" result="o"/><feFlood class="sh"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
+  const cuts = (spec.cuts || []).filter((k) => !(small && k.sm === false));
   const globalCuts = cuts.filter((k) => !k.part);
   const maskFor = (list, id) =>
     `<mask id="${id}" maskUnits="userSpaceOnUse" x="-2" y="-2" width="28" height="28"><rect x="-2" y="-2" width="28" height="28" fill="#fff"/>${list
       .map((k) => (k.width ? `<path d="${k.d}" stroke="#000" stroke-width="${k.width}" stroke-linecap="round" fill="none"/>` : `<path d="${k.d}" fill="#000"/>`))
       .join("")}</mask>`;
-  if (globalCuts.length) defs += maskFor(globalCuts, `${c}-m`);
+  if (globalCuts.length) defs += maskFor(globalCuts, `${idp}-m`);
   const partCuts = {};
   for (const k of cuts.filter((k) => k.part)) (partCuts[k.part] ||= []).push(k);
-  for (const [part, list] of Object.entries(partCuts)) defs += maskFor(list, `${c}-m-${part}`);
+  for (const [part, list] of Object.entries(partCuts)) defs += maskFor(list, `${idp}-m-${part}`);
 
   let clipN = 0;
   const draw = (p) => {
     if (p.tier === "gloss") return `<path class="hl" d="${p.d}"/>`;
     if (p.kind === "line") return `<path class="l${p.tier}" d="${p.d}" stroke-width="${p.width || 1.8}" stroke-linecap="round" stroke-linejoin="round"/>`;
-    const fill = `<path d="${p.d}" fill="url(#${c}-g${p.tier})"/>`;
+    const fill = `<path d="${p.d}" fill="url(#${idp}-g${p.tier})"/>`;
     if (edge === "none" || (edge === "inside" && p.tier === 1)) return fill;
     if (edge === "outside") return `<path class="rim" d="${p.d}" stroke-width="1.5" stroke-linejoin="round"/>${fill}`;
-    const id = `${c}-c${clipN++}`;
+    const id = `${idp}-c${clipN++}`;
     clips.push(id);
     return `<clipPath id="${id}"><path d="${p.d}"/></clipPath>${fill}<path class="rim" d="${p.d}" stroke-width="2.2" stroke-linejoin="round" clip-path="url(#${id})"/>`;
   };
@@ -90,12 +122,12 @@ function composeIcon() {
     .map((g) => {
       const inner = g.items.map(draw).join("");
       if (!g.part) return inner;
-      const m = partCuts[g.part] ? ` mask="url(#${c}-m-${g.part})"` : "";
+      const m = partCuts[g.part] ? ` mask="url(#${idp}-m-${g.part})"` : "";
       return `<g data-part="${g.part}"${m}>${inner}</g>`;
     })
     .join("\n    ");
   const badge = spec.badge
-    ? `\n    <circle data-part="badge" class="bd" cx="${spec.badge.cx}" cy="${spec.badge.cy}" r="${spec.badge.r}" fill="url(#${c}-g1)" stroke-width="1.2"/>`
+    ? `\n    <circle data-part="badge" class="bd" cx="${spec.badge.cx}" cy="${spec.badge.cy}" r="${spec.badge.r}" fill="url(#${idp}-g1)" stroke-width="1.2"/>`
     : "";
 
   const css = `
@@ -111,12 +143,12 @@ function composeIcon() {
     .${c} .hl{fill:#fff;fill-opacity:.42}${spec.badge ? `
     .${c} [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
     .${c}[data-state=on] [data-part=badge]{transform:scale(1)}` : ""}`;
-  const cutAttr = globalCuts.length ? ` mask="url(#${c}-m)"` : "";
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="ic ${c}" fill="none" overflow="visible">
+  const cutAttr = globalCuts.length ? ` mask="url(#${idp}-m)"` : "";
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${small ? 16 : 24}" height="${small ? 16 : 24}" class="ic ${c}${small ? " ic-sm" : ""}" fill="none" overflow="visible">
   <style>${css}
   </style>
   <defs>${defs}</defs>
-  <g filter="url(#${c}-sh)">
+  <g filter="url(#${idp}-sh)">
   <g${cutAttr}>
     ${body}
   </g>${badge}
@@ -165,6 +197,10 @@ function composeCss() {
 const svg = spec.kind === "glyph" ? composeGlyph() : composeIcon();
 writeFileSync(join(outDir, `${name}.svg`), svg);
 const wrote = [`${name}.svg`];
+if (spec.kind !== "glyph") {
+  writeFileSync(join(outDir, `${name}-16.svg`), composeIcon(true));
+  wrote.push(`${name}-16.svg`);
+}
 if (spec.motion && spec.kind !== "glyph") {
   writeFileSync(join(outDir, `${name}.css`), composeCss());
   wrote.push(`${name}.css`);

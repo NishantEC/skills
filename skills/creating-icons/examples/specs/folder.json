@@ -1,0 +1,10 @@
+{"name":"folder","accent":"#5B63E6","edge":"outside","badge":{"cx":19.2,"cy":19.4,"r":2.6},
+"pieces":[
+{"tier":3,"part":"back","d":"M3 6.5Q3 3.5 6 3.5H8.7Q9.7 3.5 10.4 4.3L11.8 6H18Q21 6 21 9V17.5Q21 20.5 18 20.5H6Q3 20.5 3 17.5Z"},
+{"tier":2,"part":"front","d":"M4.5 9H19.5Q21 9 21 10.5V17.5Q21 20.5 18 20.5H6Q3 20.5 3 17.5V10.5Q3 9 4.5 9Z"},
+{"tier":"gloss","part":"front","d":"M5 11.2Q5 10.6 5.6 10.6H11Q7.6 11.3 5 13.8Z"},
+{"tier":1,"kind":"line","part":"front","d":"M9.5 14.5H14.5","width":1.8}
+],
+"motion":{"hover":[{"part":"front","move":"open","box":"view","origin":"12px 20.5px","duration":950,
+"keyframes":"0%,100%{transform:scaleY(1) skewX(0)}35%,55%{transform:scaleY(.8) skewX(-5deg)}75%{transform:scaleY(1.03) skewX(.5deg)}"}],
+"on":[{"part":"front","css":"transform:scaleY(.88) skewX(-3deg)"}]}}

@@ -27,7 +27,7 @@ Stack: t3 soft disc behind (the glow), t2 the main symbol at full size, t1 two o
 
 ## Pointed vehicle (rocket, plane, ship)
 
-Stack: t3 fins or wings drawn first, 5 to 6 units long and swept out past the body (they carry the silhouette), t2 body 11 to 12 wide (never under 10) with a curved nose, t1 belt or nose cap that breaks the body into two zones, window as two pieces (t1 ring r2.6, t3 inner r1.4 with a gloss dot), gloss sliver on the left, and an exhaust of two pieces behind the body: t1 outer flame 5 to 6 units tall and 5 wide, t3 inner core 3 tall. A flame under 4 units tall disappears at 16px. The exhaust is its own part and stretches on hover (scaleY 1.4 from its top edge).
+Stack: t3 fins or wings drawn first, 5 to 6 units long and swept out past the body (they carry the silhouette), t2 body 11 to 12 wide (never under 10) with a curved nose, t1 belt or nose cap that breaks the body into two zones, window as two pieces (t1 ring r2.6, t3 inner r1.4 with a gloss dot), gloss sliver on the left, and an exhaust of two pieces behind the body: t1 outer flame 5 to 6 units tall and 5 wide, t3 inner core 3 tall. Thin-part floor: the outer flame is at least 5 tall and 4 wide in the full icon and, in the 16px variant, at least 4.5 tall and 3.5 wide (no inner core at 16px: `"sm":false`). Fins stay 3 wide at their base or more. The exhaust is its own part and stretches on hover (scaleY 1.3 from its top edge, so it stays inside the 24 box; check the overflow number from `--motion`).
 
 ## Container with a lid
 
@@ -52,3 +52,33 @@ Stack: t2 toothed ring, t1 inner disc, cut hole in the centre. Teeth come from a
 ## Rows of controls (sliders, equalisers)
 
 Stack: t3 plate behind, t1 or t2 tracks as lines width 2, t2 knobs as circles r 2.2 to 2.5 each at a different position along its track (never aligned), gloss on the knobs. Staggered positions are the whole design.
+
+## Worn pair (headphones, earbuds, glasses)
+
+Stack: t3 band as a thick arc behind (stroke-like shape 2.6 wide, spanning y 3.5 to 13), t2 band as a line of width 2 on top of it, t1 ear cups drawn as rounded blocks, t3 cushion strip on the inner face of each cup, mirror one cup.
+Proportions that read at 16px: cup 4.4 wide by 7 tall (never wider than 5, never taller than 8), set 1.5 units in from the live edge (x 3.5 to 7.9 and the mirror), centre of the cups at y 15 to 16; the band meets the cups at their top third. Cups are the only t1 pieces. Total width stays 16 to 18, the band arc is the silhouette, the cups are accents, so if the cups look heavier than the band, shrink them, do not thicken the band. 16px variant: drop the cushion strips and the gloss, keep band (t3 + t2 line) and cups.
+
+## Bell
+
+Stack: t3 halo or back bell offset up and right, t2 bell body (flared dome, 12 wide at the lip, 13 tall, lip corner radius 1.5), t1 clapper (r 2 to 2.5, 1 unit below the lip, its own part `clapper` that swings), t1 top knob r 1.2 or a 2 by 2.5 stub, gloss on the left shoulder. Pivot the ring move at the knob (`"box":"view"`, `"origin":"12px 4px"`). 16px variant: drop the knob if the clapper stays.
+
+## Folder
+
+Stack: t3 back panel with the tab (full width 18, tab 6 wide and 2.5 tall, raised on the left), t2 front panel (18 wide, 11 tall, radius 3 at the bottom, 1.5 at the top, y 9.5 to 20), t1 a single stripe or label bar at 3 units from the top of the front panel, gloss on the top-left. The front panel is its own part and tilts open on hover (rotate -8 from the bottom left, `"origin":"4px 20px"`, `"box":"view"`).
+
+## Speech bubble (chat)
+
+Stack: t3 second bubble behind, offset up and right by 2.5, t2 front bubble 15 wide and 11 tall, radius 3.5, with a tail (3 wide, 3.5 tall) at the lower left that is part of the same path, t1 three dots r 1.3 (min) spaced 4 apart or two text lines. The dots are their own part and bob in sequence on hover (staggered `delay`). 16px variant: two lines or three dots, never both, no second bubble detail.
+
+## Minimum sizes (every archetype)
+
+| Thing | Full icon (24) | 16px variant |
+| --- | --- | --- |
+| Filled shape, narrow axis | 2.5 or more (1.5 hard floor) | 2.5 or more (check errors below that) |
+| Line width | 1.8 to 2 | 2 (compose raises it) |
+| Gap between parts | 1.5 | 1.5 |
+| Dot radius | 1.2 | 1.3 |
+| Interior marks (tier 1) | at most 6 | at most 3 |
+| Pieces | 4 to 12 | 3 to 8 |
+
+Flames, tails, handles, cushions and clappers are the usual offenders: draw them at least this big, and if the shape needs a thin version at 24, give the 16px variant a fatter `"sm"` override.

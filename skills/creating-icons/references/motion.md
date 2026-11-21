@@ -26,6 +26,9 @@ Colour icons ship motion by default. Put it in the spec; compose writes `<name>.
 4. Only `transform`, `opacity`, `stroke-dashoffset`.
 5. 700 to 1100ms. Settle with a small overshoot (72% frame at 0.3 to 1.5 units past rest, then rest).
 6. Reduced motion is emitted for you: `animation:none; transition:none`.
+7. Stay inside the 24 box. Swept geometry (rotated lids, lifted paper, flames that stretch) plus the 0.75 rim must remain within 0 to 24. A part that starts at y 2.6 cannot lift 1.6: rotate it less or move it only sideways. `preview.mjs --motion` measures this per part and prints `overflow` (must be 0.00).
+8. Pivot on a real hinge, one the viewer can see: lid hinge, bell knob, handle root. Tilts of 7 to 12 degrees on large parts, 15 to 20 on small ones.
+9. `--motion` also fails a hover that lasts under 600 or over 1300 ms, a last frame that differs from the first (the seam), and an off state that does not return to the drawn pose.
 
 ## Recipes (keyframes)
 

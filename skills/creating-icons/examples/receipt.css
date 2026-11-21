@@ -7,6 +7,6 @@
 .ic-receipt[data-state="on"] [data-part="paper"]{transform:translateY(-.8px)}
 .ic-receipt[data-state="on"] [data-part="badge"]{transform:scale(1);transition-delay:200ms}
 
-@keyframes ei-receipt-print{0%,100%{transform:translateY(0)}35%{transform:translateY(-2.2px)}65%{transform:translateY(.5px)}}
+@keyframes ei-receipt-print{0%,100%{transform:translateY(0)}35%{transform:translateY(-1.6px)}65%{transform:translateY(.4px)}}
 
 @media (prefers-reduced-motion:reduce){.ic-receipt [data-part],.ic-receipt:hover [data-part],:hover>.ic-receipt [data-part]{animation:none!important;transition:none!important}}

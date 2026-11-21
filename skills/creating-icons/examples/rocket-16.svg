@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="ic ic-rocket ic-sm" fill="none" overflow="visible">
+  <style>
+    .ic-rocket{--g3a:#dde9ff;--g3b:#bad4ff;--g2a:#a9c9ff;--g2b:#7cadff;--g1a:#5695ff;--g1b:#4276cc;--ln1:#2b4c85;--ln2:#3d6dbd;--ln3:#a0c4ff;--edge:#3d6dbd;--sh:rgb(83 147 255 / .32);--ring:#fff}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-rocket{--g3a:#7aabfd;--g3b:#598bdf;--g2a:#bed6fd;--g2b:#83b2fe;--g1a:#5796ff;--g1b:#2167db;--ln1:#00276c;--ln2:#a3c5ff;--ln3:#8ab2f3;--edge:#dbe9fe;--sh:rgb(0 0 0 / .55);--ring:#18181b}}
+    :root.dark .ic-rocket,:root[data-theme=dark] .ic-rocket{--g3a:#7aabfd;--g3b:#598bdf;--g2a:#bed6fd;--g2b:#83b2fe;--g1a:#5796ff;--g1b:#2167db;--ln1:#00276c;--ln2:#a3c5ff;--ln3:#8ab2f3;--edge:#dbe9fe;--sh:rgb(0 0 0 / .55);--ring:#18181b}
+    .ic-rocket .g1a{stop-color:var(--g1a)}.ic-rocket .g1b{stop-color:var(--g1b)}
+    .ic-rocket .g2a{stop-color:var(--g2a)}.ic-rocket .g2b{stop-color:var(--g2b)}
+    .ic-rocket .g3a{stop-color:var(--g3a)}.ic-rocket .g3b{stop-color:var(--g3b)}
+    .ic-rocket .l1{stroke:var(--ln1)}.ic-rocket .l2{stroke:var(--ln2)}.ic-rocket .l3{stroke:var(--ln3)}
+    .ic-rocket .rim{stroke:var(--edge)}.ic-rocket .bd{stroke:var(--ring)}
+    .ic-rocket .sh{flood-color:var(--sh)}
+    .ic-rocket .hl{fill:#fff;fill-opacity:.42}
+    .ic-rocket [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-rocket[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <defs><linearGradient id="ic-rocket-sm-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g1a"/><stop offset="1" class="g1b"/></linearGradient><linearGradient id="ic-rocket-sm-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g2a"/><stop offset="1" class="g2b"/></linearGradient><linearGradient id="ic-rocket-sm-g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g3a"/><stop offset="1" class="g3b"/></linearGradient><filter id="ic-rocket-sm-sh" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.1"/><feOffset dy="1.3" result="o"/><feFlood class="sh"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <g filter="url(#ic-rocket-sm-sh)">
+  <g>
+    <path class="rim" d="M8 10.2L4.2 14.2Q3 15.8 3.4 17.5L3.6 18.4Q3.9 19.2 4.6 18.7L8 16.2Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 10.2L4.2 14.2Q3 15.8 3.4 17.5L3.6 18.4Q3.9 19.2 4.6 18.7L8 16.2Z" fill="url(#ic-rocket-sm-g3)"/>
+    <path class="rim" d="M16 10.2L19.8 14.2Q21 15.8 20.6 17.5L20.4 18.4Q20.1 19.2 19.4 18.7L16 16.2Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M16 10.2L19.8 14.2Q21 15.8 20.6 17.5L20.4 18.4Q20.1 19.2 19.4 18.7L16 16.2Z" fill="url(#ic-rocket-sm-g3)"/>
+    <g data-part="exhaust"><path class="rim" d="M9.5 15.6H14.5Q14.6 18.3 12 21.2Q9.4 18.3 9.5 15.6Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.5 15.6H14.5Q14.6 18.3 12 21.2Q9.4 18.3 9.5 15.6Z" fill="url(#ic-rocket-sm-g1)"/></g>
+    <path class="rim" d="M12 2.6C15.6 4.4 17.5 7.6 17.5 11.5V14.5Q17.5 16.5 15.5 16.5H8.5Q6.5 16.5 6.5 14.5V11.5C6.5 7.6 8.4 4.4 12 2.6Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 2.6C15.6 4.4 17.5 7.6 17.5 11.5V14.5Q17.5 16.5 15.5 16.5H8.5Q6.5 16.5 6.5 14.5V11.5C6.5 7.6 8.4 4.4 12 2.6Z" fill="url(#ic-rocket-sm-g2)"/>
+    <path class="rim" d="M12 2.6C13.8 3.5 15.18 4.75 16.1 6.26Q12 4.9 7.9 6.26C8.82 4.75 10.2 3.5 12 2.6Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 2.6C13.8 3.5 15.18 4.75 16.1 6.26Q12 4.9 7.9 6.26C8.82 4.75 10.2 3.5 12 2.6Z" fill="url(#ic-rocket-sm-g1)"/>
+    <path class="rim" d="M9.4 10.8a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.4 10.8a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z" fill="url(#ic-rocket-sm-g1)"/>
+    <path class="rim" d="M10.6 10.8a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M10.6 10.8a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0Z" fill="url(#ic-rocket-sm-g3)"/>
+  </g>
+    <circle data-part="badge" class="bd" cx="19.2" cy="4.8" r="2.5" fill="url(#ic-rocket-sm-g1)" stroke-width="1.2"/>
+  </g>
+</svg>

@@ -1,0 +1,16 @@
+.ic-bell [data-part]{transform-box:fill-box;transform-origin:center}
+.ic-bell [data-part="bell"]{transform-box:view-box;transform-origin:12px 3px;transition:transform 380ms cubic-bezier(.34,1.45,.64,1),opacity 260ms ease,stroke-dashoffset 380ms ease}
+.ic-bell [data-part="clapper"]{transform-box:view-box;transform-origin:12px 3px;transition:transform 380ms cubic-bezier(.34,1.45,.64,1),opacity 260ms ease,stroke-dashoffset 380ms ease}
+.ic-bell [data-part="badge"]{transform:scale(0);transform-origin:center;transition:transform 420ms cubic-bezier(.68,-.55,.27,1.55)}
+
+.ic-bell:hover [data-part="bell"],:hover>.ic-bell [data-part="bell"]{animation:ei-bell-ring 1000ms ease-in-out}
+.ic-bell:hover [data-part="clapper"],:hover>.ic-bell [data-part="clapper"]{animation:ei-bell-swing 1000ms ease-in-out 70ms}
+
+.ic-bell[data-state="on"] [data-part="bell"]{transform:rotate(-5deg)}
+.ic-bell[data-state="on"] [data-part="clapper"]{transform:rotate(-3deg)}
+.ic-bell[data-state="on"] [data-part="badge"]{transform:scale(1);transition-delay:200ms}
+
+@keyframes ei-bell-ring{0%,100%{transform:rotate(0)}20%{transform:rotate(-8deg)}40%{transform:rotate(7deg)}60%{transform:rotate(-4deg)}80%{transform:rotate(2deg)}}
+@keyframes ei-bell-swing{0%,100%{transform:rotate(0)}20%{transform:rotate(9deg)}40%{transform:rotate(-8deg)}60%{transform:rotate(5deg)}80%{transform:rotate(-2deg)}}
+
+@media (prefers-reduced-motion:reduce){.ic-bell [data-part],.ic-bell:hover [data-part],:hover>.ic-bell [data-part]{animation:none!important;transition:none!important}}

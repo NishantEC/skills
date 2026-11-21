@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-import { readdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
-import { join, basename, resolve } from "node:path";
-import { screenshot } from "./lib/shot.mjs";
+import { readdirSync, readFileSync, writeFileSync, existsSync, mkdirSync, rmSync } from "node:fs";
+import { join, basename, resolve, dirname } from "node:path";
+import { openBrowser } from "./lib/cdp.mjs";
+import { recordMotion } from "./lib/motion.mjs";
 
 const argv = process.argv.slice(2);
 const flag = (name) => {
@@ -13,29 +14,18 @@ const flag = (name) => {
 };
 const cdp = flag("--cdp");
 const png = flag("--png");
+const motionDir = flag("--motion");
 const freeze = Number(flag("--freeze") ?? 0.4);
+const fps = Number(flag("--fps") ?? 30);
 const [dir, out = "preview.html"] = argv;
 if (!dir) {
-  console.error("usage: node preview.mjs <dir-with-svgs> [out.html] [--png out.png] [--cdp http://127.0.0.1:9333] [--freeze 0.4]");
+  console.error(`usage: node preview.mjs <dir-with-svgs> [out.html] [--png out.png] [--motion outDir] [--cdp http://127.0.0.1:9333] [--freeze 0.4] [--fps 30]
+
+--png     one sheet: light | dark by prefers-color-scheme | dark by .dark class. The three are real renders of the
+          unmodified SVG CSS, and the script asserts the two dark ones resolve to identical paints (computed CSS variables) and that .light beats a dark OS.
+--motion  records each icon's hover, on and off motion to <outDir>/<name>.gif and .mp4, writes frames and a contact sheet,
+          and reports overflow past the 24 box, loop seams and reduced-motion behaviour.`);
   process.exit(1);
-}
-
-const MEDIA = /@media\s*\(prefers-color-scheme:\s*dark\)\s*\{/g;
-
-function rewrite(svg, mode) {
-  let result = "";
-  let cursor = 0;
-  for (const match of svg.matchAll(MEDIA)) {
-    if (match.index < cursor) continue;
-    let depth = 1;
-    let i = match.index + match[0].length;
-    while (depth && i < svg.length) (depth += svg[i] === "{" ? 1 : svg[i] === "}" ? -1 : 0), i++;
-    const body = svg.slice(match.index + match[0].length, i - 1);
-    result += svg.slice(cursor, match.index) + (mode === "dark" ? body : "");
-    cursor = i;
-  }
-  result += svg.slice(cursor);
-  return result.replaceAll(":root", mode === "dark" ? ".pd" : ".pl");
 }
 
 let counter = 0;
@@ -47,59 +37,51 @@ function unique(svg) {
   return s;
 }
 
-const files = readdirSync(dir).filter((f) => f.endsWith(".svg")).sort();
-const sizes = [16, 24, 48, 96];
-const sized = (svg, size, extra = "") =>
-  rewriteSize(svg, size, extra);
-function rewriteSize(svg, size, extra) {
-  return svg.replace(/width="\d+" height="\d+"/, `width="${size}" height="${size}"`).replace(/<svg /, `<svg ${extra.replace("hov","")} `).replace(/class="ic /, extra.includes("hov") ? `class="hov ic ` : `class="ic `);
+function cell(svg, size, attrs = "") {
+  const sized = svg.replace(/width="\d+" height="\d+"/, `width="${size}" height="${size}"`).replace(/<svg /, `<svg ${attrs} `);
+  return `<span class="cell" style="width:${size}px;height:${size}px">${unique(sized)}</span>`;
 }
-const cell = (svg, mode, size, extra = "") => `<span class="cell" style="width:${size}px;height:${size}px">${unique(sized(rewrite(svg, mode), size, extra))}</span>`;
-const panel = (svg, mode, cells) => `<div class="p ${mode === "dark" ? "pd dark" : "pl"}">${cells}</div>`;
+
+const files = readdirSync(dir).filter((f) => f.endsWith(".svg") && !/-16\.svg$/.test(f)).sort();
+const names = files.map((f) => basename(f, ".svg"));
 
 let motionCss = "";
-const rows = files
-  .map((f) => {
-    const name = basename(f, ".svg");
-    const svg = readFileSync(join(dir, f), "utf8");
+const rows = names
+  .map((name) => {
+    const full = readFileSync(join(dir, `${name}.svg`), "utf8");
+    const smallPath = join(dir, `${name}-16.svg`);
+    const small = existsSync(smallPath) ? readFileSync(smallPath, "utf8") : full;
     const cssPath = join(dir, `${name}.css`);
     const hasMotion = existsSync(cssPath);
     if (hasMotion) {
       const css = readFileSync(cssPath, "utf8");
       motionCss += css + "\n" + css.replace(/:hover/g, ".hov");
     }
-    const std = (mode) => panel(svg, mode, sizes.map((s) => cell(svg, mode, s)).join(""));
-    const motion = (mode) =>
-      hasMotion
-        ? panel(
-            svg,
-            mode,
-            [
-              `<span class="lab">off</span>${cell(svg, mode, 48)}`,
-              `<span class="lab">on</span>${cell(svg, mode, 48, 'data-state="on"')}`,
-              `<span class="lab">mid-move</span><span class="hov">${cell(svg, mode, 48, "hov")}</span>`,
-              `<span class="lab">hover me</span>${cell(svg, mode, 48)}`,
-            ].join(""),
-          )
-        : panel(svg, mode, '<span class="lab">no motion</span>');
-    return `<div class="row"><div class="n">${name}${hasMotion ? "" : " (glyph or static)"}</div>${std("light")}${std("dark")}${motion("light")}${motion("dark")}</div>`;
+    const cells = [
+      cell(small, 16),
+      cell(full, 16),
+      cell(full, 24),
+      cell(full, 48),
+      cell(full, 96),
+      hasMotion ? `<i class="sep"></i>${cell(full, 48, 'data-state="on"')}<span class="hov">${cell(full, 48)}</span>` : "",
+    ].join("");
+    return `<div class="row"><div class="n">${name}</div><div class="p">${cells}</div></div>`;
   })
   .join("\n");
 
-const html = `<!doctype html><meta charset="utf-8"><style>
-body{margin:0;font:12px system-ui;background:#fff}
-.head,.row{display:grid;grid-template-columns:130px 330px 330px 340px 340px;align-items:stretch}
-.head div{padding:8px 12px;color:#777;border-bottom:1px solid #eee}
-.n{padding:14px 12px;color:#444}
-.p{display:flex;gap:18px;box-sizing:border-box;align-items:center;padding:14px 18px}
-.pl{background:#fff;color:#27272a}.pd{background:#18181b;color:#e4e4e7}
+const css = `
+body{margin:0;font:12px system-ui;background:#fff;color:#27272a}
+@media (prefers-color-scheme:dark){html:not(.light) body{background:#18181b;color:#e4e4e7}}
+html.dark body{background:#18181b;color:#e4e4e7}
+.row{display:flex;align-items:center}
+.n{width:100px;flex:none;padding:0 12px;color:#777;font-size:11px}
+.names-off .n{display:none}
+.p{display:flex;gap:16px;align-items:center;padding:14px 18px}
 .cell{display:inline-block;line-height:0}
-.lab{font-size:10px;color:#999;writing-mode:vertical-rl;transform:rotate(180deg)}
-${motionCss}
-</style>
-<div class="head"><div>icon</div><div>light 16 / 24 / 48 / 96</div><div>dark 16 / 24 / 48 / 96</div><div>light motion</div><div>dark motion</div></div>
-${rows}
-<script>
+.sep{width:1px;height:48px;background:currentColor;opacity:.15}
+${motionCss}`;
+
+const script = `
 const t = ${freeze};
 requestAnimationFrame(() => requestAnimationFrame(() => {
   document.querySelectorAll(".hov").forEach((el) => {
@@ -109,12 +91,76 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
       a.currentTime = d * t;
     });
   });
-}));
-</script>`;
+}));`;
 
-writeFileSync(out, html);
-console.log(`wrote ${out} (${files.length} icons)`);
-if (png) {
-  await screenshot({ htmlPath: resolve(out), out: resolve(png), cdp });
-  console.log(`wrote ${png}`);
+const page = ({ interactive, names: showNames }) => `<!doctype html><meta charset="utf-8"><meta name="color-scheme" content="light dark"><style>${css}</style>
+<body class="${showNames ? "" : "names-off"}">
+${interactive ? `<div style="padding:10px 14px;font-size:11px;opacity:.7">columns: 16 small variant, 16 full, 24, 48, 96, on state, mid-move. Follows the OS theme. <button onclick="document.documentElement.classList.toggle('dark')">toggle .dark</button></div>` : ""}
+${rows}
+<script>${script}</script>`;
+
+writeFileSync(out, page({ interactive: true, names: true }));
+console.log(`wrote ${out} (${names.length} icons)`);
+
+const tmpDir = join(dirname(resolve(out)), ".preview-tmp");
+mkdirSync(tmpDir, { recursive: true });
+const stem = join(tmpDir, "sheet");
+const runs = [
+  { key: "light", scheme: "light", cls: "", names: true },
+  { key: "media", scheme: "dark", cls: "", names: false },
+  { key: "class", scheme: "light", cls: "dark", names: false },
+  { key: "darkOsLightClass", scheme: "dark", cls: "light", names: true },
+];
+
+const browser = png || motionDir ? await openBrowser(cdp) : null;
+try {
+  if (png) {
+    const shots = {};
+    const vars = {};
+    for (const r of runs) {
+      const file = `${stem}.${r.key}.html`;
+      writeFileSync(file, page({ interactive: false, names: r.names }).replace("<!doctype html>", `<!doctype html><html class="${r.cls}">`));
+      const p = await browser.newPage({ width: r.names ? 580 : 480, colorScheme: r.scheme });
+      try {
+        await p.load(file);
+        await new Promise((res) => setTimeout(res, 400));
+        await p.fitHeight();
+        await new Promise((res) => setTimeout(res, 150));
+        shots[r.key] = await p.shot();
+        vars[r.key] = await p.eval(`[...document.querySelectorAll('svg.ic')].map((s) => { const c = getComputedStyle(s); return ['g1a','g1b','g2a','g2b','g3a','g3b','ln1','ln2','ln3','edge','sh','ring'].map((k) => c.getPropertyValue('--' + k).trim()).join('|'); }).join('\\n')`);
+      } finally {
+        await p.close();
+      }
+    }
+    const darkSame = vars.media === vars.class && vars.media !== vars.light;
+    const lightWins = vars.light === vars.darkOsLightClass;
+    const uri = (b) => `data:image/png;base64,${b.toString("base64")}`;
+    const sheet = `<!doctype html><meta charset="utf-8"><style>body{margin:0;font:12px system-ui;background:#888;display:flex;gap:6px}
+figure{margin:0}figcaption{background:#444;color:#fff;padding:6px 10px}img{display:block;zoom:.5}</style>
+<figure><figcaption>light</figcaption><img src="${uri(shots.light)}"></figure>
+<figure><figcaption>dark: prefers-color-scheme (${darkSame ? "matches .dark" : "DIFFERS from .dark"})</figcaption><img src="${uri(shots.media)}"></figure>
+<figure><figcaption>dark: .dark class on html, OS light</figcaption><img src="${uri(shots.class)}"></figure>`;
+    const sheetFile = `${stem}.sheet.html`;
+    writeFileSync(sheetFile, sheet);
+    const p = await browser.newPage({ width: 1600, height: 900, dpr: 2 });
+    try {
+      await p.load(sheetFile);
+      await new Promise((res) => setTimeout(res, 300));
+      await p.fitHeight();
+      writeFileSync(resolve(png), await p.shot());
+    } finally {
+      await p.close();
+    }
+    console.log(`wrote ${png}`);
+    console.log(`dark paths (prefers-color-scheme vs .dark), computed paints of every icon: ${darkSame ? "identical" : "DIFFER: fix the CSS in compose.mjs"}`);
+    console.log(`.light class beats a dark OS: ${lightWins ? "yes" : "NO: fix the :not(.light) guard"}`);
+    if (!darkSame || !lightWins) process.exitCode = 1;
+  }
+  if (motionDir) {
+    const bad = await recordMotion({ browser, dir: resolve(dir), names, outDir: resolve(motionDir), fps });
+    if (bad) process.exitCode = 1;
+  }
+} finally {
+  await browser?.close();
+  rmSync(tmpDir, { recursive: true, force: true });
 }

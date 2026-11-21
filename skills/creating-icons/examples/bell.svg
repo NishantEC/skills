@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="ic ic-bell" fill="none" overflow="visible">
+  <style>
+    .ic-bell{--g3a:#fcedd2;--g3b:#fadba5;--g2a:#f9d28f;--g2b:#f5ba55;--g1a:#f2a623;--g1b:#c28319;--ln1:#7e5510;--ln2:#b37917;--ln3:#f8cd84;--edge:#b37917;--sh:rgb(242 164 31 / .32);--ring:#fff}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-bell{--g3a:#db9d45;--g3b:#ba7e1e;--g2a:#fdca87;--g2b:#ed9e05;--g1a:#cd8800;--g1b:#956306;--ln1:#412801;--ln2:#fbb44e;--ln3:#d6a86b;--edge:#ffe3c0;--sh:rgb(0 0 0 / .55);--ring:#18181b}}
+    :root.dark .ic-bell,:root[data-theme=dark] .ic-bell{--g3a:#db9d45;--g3b:#ba7e1e;--g2a:#fdca87;--g2b:#ed9e05;--g1a:#cd8800;--g1b:#956306;--ln1:#412801;--ln2:#fbb44e;--ln3:#d6a86b;--edge:#ffe3c0;--sh:rgb(0 0 0 / .55);--ring:#18181b}
+    .ic-bell .g1a{stop-color:var(--g1a)}.ic-bell .g1b{stop-color:var(--g1b)}
+    .ic-bell .g2a{stop-color:var(--g2a)}.ic-bell .g2b{stop-color:var(--g2b)}
+    .ic-bell .g3a{stop-color:var(--g3a)}.ic-bell .g3b{stop-color:var(--g3b)}
+    .ic-bell .l1{stroke:var(--ln1)}.ic-bell .l2{stroke:var(--ln2)}.ic-bell .l3{stroke:var(--ln3)}
+    .ic-bell .rim{stroke:var(--edge)}.ic-bell .bd{stroke:var(--ring)}
+    .ic-bell .sh{flood-color:var(--sh)}
+    .ic-bell .hl{fill:#fff;fill-opacity:.42}
+    .ic-bell [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-bell[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <defs><linearGradient id="ic-bell-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g1a"/><stop offset="1" class="g1b"/></linearGradient><linearGradient id="ic-bell-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g2a"/><stop offset="1" class="g2b"/></linearGradient><linearGradient id="ic-bell-g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g3a"/><stop offset="1" class="g3b"/></linearGradient><filter id="ic-bell-sh" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.1"/><feOffset dy="1.3" result="o"/><feFlood class="sh"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <g filter="url(#ic-bell-sh)">
+  <g>
+    <path class="rim" d="M5.5 10a7.5 7.5 0 1 0 15 0a7.5 7.5 0 1 0 -15 0Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M5.5 10a7.5 7.5 0 1 0 15 0a7.5 7.5 0 1 0 -15 0Z" fill="url(#ic-bell-g3)"/>
+    <g data-part="clapper"><path class="rim" d="M10 19.4a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 19.4a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z" fill="url(#ic-bell-g1)"/></g>
+    <g data-part="bell"><path class="rim" d="M12 4.5C15.6 4.5 17.6 7.2 17.6 10.6V13Q17.6 14.6 19.2 15.6Q20.5 16.4 20.5 17Q20.5 18 19.3 18H4.7Q3.5 18 3.5 17Q3.5 16.4 4.8 15.6Q6.4 14.6 6.4 13V10.6C6.4 7.2 8.4 4.5 12 4.5Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 4.5C15.6 4.5 17.6 7.2 17.6 10.6V13Q17.6 14.6 19.2 15.6Q20.5 16.4 20.5 17Q20.5 18 19.3 18H4.7Q3.5 18 3.5 17Q3.5 16.4 4.8 15.6Q6.4 14.6 6.4 13V10.6C6.4 7.2 8.4 4.5 12 4.5Z" fill="url(#ic-bell-g2)"/><path class="hl" d="M8 11.2C8 8.8 8.9 7.2 10.6 6.3Q9.5 8.1 9.6 11.6Z"/><path class="rim" d="M12 2.6Q13.2 2.6 13.2 3.8V5.4H10.8V3.8Q10.8 2.6 12 2.6Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 2.6Q13.2 2.6 13.2 3.8V5.4H10.8V3.8Q10.8 2.6 12 2.6Z" fill="url(#ic-bell-g1)"/></g>
+  </g>
+    <circle data-part="badge" class="bd" cx="19.6" cy="4.9" r="2.4" fill="url(#ic-bell-g1)" stroke-width="1.2"/>
+  </g>
+</svg>

@@ -33,6 +33,7 @@ One JSON file per icon, compose turns it into `<name>.svg` (+ `<name>.css`).
   - `mirror`: `true` adds the mirror image around x=12 (or a number for another axis). Use for symmetric halves.
 - `cuts`: holes punched through everything (or only one `part`). Fill = hole, or give `width` for a round-capped stroke hole.
 - `motion`: see `references/motion.md`.
+- `sm` on a piece or cut (16px variant only): `false` drops it, an object overrides fields (`{"d":"...","width":2.2}`), `true` on a gloss keeps it. Compose always writes `<name>-16.svg` next to `<name>.svg`; it automatically drops the gloss and raises lines to width 2, and warns on stderr when the variant still has more than 3 tier-1 pieces, no tier-3 piece, or a shape under 2.5 units. See "Small sizes" in SKILL.md.
 
 ## Glyph spec
 

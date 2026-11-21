@@ -4,9 +4,9 @@
 
 .ic-trash:hover [data-part="lid"],:hover>.ic-trash [data-part="lid"]{animation:ei-trash-lid 1000ms ease-in-out}
 
-.ic-trash[data-state="on"] [data-part="lid"]{transform:translateY(-.8px) rotate(-9deg)}
+.ic-trash[data-state="on"] [data-part="lid"]{transform:rotate(-4deg)}
 .ic-trash[data-state="on"] [data-part="badge"]{transform:scale(1);transition-delay:200ms}
 
-@keyframes ei-trash-lid{0%,100%{transform:translateY(0) rotate(0)}30%,50%{transform:translateY(-1.6px) rotate(-18deg)}72%{transform:translateY(.3px) rotate(1.5deg)}}
+@keyframes ei-trash-lid{0%,100%{transform:rotate(0)}30%,50%{transform:rotate(-7.5deg)}72%{transform:rotate(1deg)}}
 
 @media (prefers-reduced-motion:reduce){.ic-trash [data-part],.ic-trash:hover [data-part],:hover>.ic-trash [data-part]{animation:none!important;transition:none!important}}

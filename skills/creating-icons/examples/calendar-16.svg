@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="ic ic-calendar ic-sm" fill="none" overflow="visible">
+  <style>
+    .ic-calendar{--g3a:#d8ecf3;--g3b:#b2d9e7;--g2a:#9fcfe2;--g2b:#6cb6d2;--g1a:#42a1c5;--g1b:#327f9d;--ln1:#205366;--ln2:#2e7691;--ln3:#95cadf;--edge:#2e7691;--sh:rgb(62 159 196 / .32);--ring:#fff}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-calendar{--g3a:#6fb6d4;--g3b:#4f96b4;--g2a:#9ae0fe;--g2b:#4cc0ec;--g1a:#35a6cf;--g1b:#0c7a9c;--ln1:#023344;--ln2:#7ed1f3;--ln3:#87bad0;--edge:#cceefe;--sh:rgb(0 0 0 / .55);--ring:#18181b}}
+    :root.dark .ic-calendar,:root[data-theme=dark] .ic-calendar{--g3a:#6fb6d4;--g3b:#4f96b4;--g2a:#9ae0fe;--g2b:#4cc0ec;--g1a:#35a6cf;--g1b:#0c7a9c;--ln1:#023344;--ln2:#7ed1f3;--ln3:#87bad0;--edge:#cceefe;--sh:rgb(0 0 0 / .55);--ring:#18181b}
+    .ic-calendar .g1a{stop-color:var(--g1a)}.ic-calendar .g1b{stop-color:var(--g1b)}
+    .ic-calendar .g2a{stop-color:var(--g2a)}.ic-calendar .g2b{stop-color:var(--g2b)}
+    .ic-calendar .g3a{stop-color:var(--g3a)}.ic-calendar .g3b{stop-color:var(--g3b)}
+    .ic-calendar .l1{stroke:var(--ln1)}.ic-calendar .l2{stroke:var(--ln2)}.ic-calendar .l3{stroke:var(--ln3)}
+    .ic-calendar .rim{stroke:var(--edge)}.ic-calendar .bd{stroke:var(--ring)}
+    .ic-calendar .sh{flood-color:var(--sh)}
+    .ic-calendar .hl{fill:#fff;fill-opacity:.42}
+    .ic-calendar [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-calendar[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <defs><linearGradient id="ic-calendar-sm-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g1a"/><stop offset="1" class="g1b"/></linearGradient><linearGradient id="ic-calendar-sm-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g2a"/><stop offset="1" class="g2b"/></linearGradient><linearGradient id="ic-calendar-sm-g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g3a"/><stop offset="1" class="g3b"/></linearGradient><filter id="ic-calendar-sm-sh" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.1"/><feOffset dy="1.3" result="o"/><feFlood class="sh"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <g filter="url(#ic-calendar-sm-sh)">
+  <g>
+    <path class="rim" d="M7.5 4H18.5Q21.5 4 21.5 7V16.5Q21.5 19.5 18.5 19.5H7.5Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M7.5 4H18.5Q21.5 4 21.5 7V16.5Q21.5 19.5 18.5 19.5H7.5Z" fill="url(#ic-calendar-sm-g3)"/>
+    <path class="rim" d="M2.5 9Q2.5 6 5.5 6H16.5Q19.5 6 19.5 9V18.5Q19.5 21.5 16.5 21.5H5.5Q2.5 21.5 2.5 18.5Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M2.5 9Q2.5 6 5.5 6H16.5Q19.5 6 19.5 9V18.5Q19.5 21.5 16.5 21.5H5.5Q2.5 21.5 2.5 18.5Z" fill="url(#ic-calendar-sm-g2)"/>
+    <path class="rim" d="M2.5 10.5V9Q2.5 6 5.5 6H16.5Q19.5 6 19.5 9V10.5Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M2.5 10.5V9Q2.5 6 5.5 6H16.5Q19.5 6 19.5 9V10.5Z" fill="url(#ic-calendar-sm-g1)"/>
+    <path class="l1" d="M7 3.2V7.6M15 3.2V7.6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <g data-part="today"><path class="rim" d="M12.8 16Q12.8 14.5 14.3 14.5H16.5Q18 14.5 18 16V18.2Q18 19.7 16.5 19.7H14.3Q12.8 19.7 12.8 18.2Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M12.8 16Q12.8 14.5 14.3 14.5H16.5Q18 14.5 18 16V18.2Q18 19.7 16.5 19.7H14.3Q12.8 19.7 12.8 18.2Z" fill="url(#ic-calendar-sm-g1)"/></g>
+  </g>
+    <circle data-part="badge" class="bd" cx="19.2" cy="19.2" r="2.6" fill="url(#ic-calendar-sm-g1)" stroke-width="1.2"/>
+  </g>
+</svg>

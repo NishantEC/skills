@@ -12,7 +12,8 @@ if (!dir) {
 let failures = 0;
 const files = readdirSync(dir).filter((f) => f.endsWith(".svg")).sort();
 for (const f of files) {
-  const name = basename(f, ".svg");
+  const small = /-16\.svg$/.test(f);
+  const name = basename(f, small ? "-16.svg" : ".svg");
   const svg = readFileSync(join(dir, f), "utf8");
   const glyph = /class="[^"]*\bgl\b/.test(svg);
   const errs = [];
@@ -51,21 +52,30 @@ for (const f of files) {
 
   if (!glyph) {
     const count = (re) => (svg.match(re) || []).length;
-    const fills = [1, 2, 3].map((t) => count(new RegExp(`fill="url\\(#ic-${name}-g${t}\\)"`, "g")) + count(new RegExp(`class="l${t}"`, "g")));
+    const fills = [1, 2, 3].map((t) => count(new RegExp(`fill="url\\(#ic-${name}(?:-sm)?-g${t}\\)"`, "g")) + count(new RegExp(`class="l${t}"`, "g")));
     const shapes = fills.reduce((a, b) => a + b, 0) + count(/class="hl"/g);
-    if (shapes < 4) errs.push(`only ${shapes} pieces: colour icons need at least 4`);
+    if (shapes < (small ? 3 : 4)) errs.push(`only ${shapes} pieces: colour icons need at least 4`);
     const tiers = fills.filter((n) => n > 0).length;
-    if (tiers < 3) errs.push(`uses ${tiers} of 3 tiers (t1 ${fills[0]}, t2 ${fills[1]}, t3 ${fills[2]}): need all three`);
+    if (tiers < (small ? 2 : 3)) errs.push(`uses ${tiers} of 3 tiers (t1 ${fills[0]}, t2 ${fills[1]}, t3 ${fills[2]}): need ${small ? "at least two" : "all three"}`);
     if (shapes > 14) warns.push(`${shapes} pieces: over the detail budget, merge or drop`);
+    if (small && !/width="16" height="16"/.test(svg)) errs.push("16px variant must be width/height 16");
     if (!/<filter/.test(svg)) errs.push("no drop shadow filter");
     if (!/class="rim"/.test(svg) && !/--edge/.test(svg)) errs.push("no rim");
     if (!/<linearGradient/.test(svg)) errs.push("no gradients (depth cue missing)");
     const parts = (svg.match(/data-part="/g) || []).length;
     if (parts === 0) warns.push("no data-part: nothing can move");
     let cssExists = true;
-    try { readFileSync(join(dir, `${name}.css`)); } catch { cssExists = false; }
+    if (small) cssExists = true;
+    else try { readFileSync(join(dir, `${name}.css`)); } catch { cssExists = false; }
+    if (small) {
+      const t1 = count(/class="l1"/g) + count(/fill="url\(#ic-[a-z0-9-]+-g1\)"/g) - (/data-part="badge"/.test(svg) ? 1 : 0);
+      if (t1 > 3) errs.push(`16px variant has ${t1} tier-1 pieces: at most 3 interior marks`);
+      if (shapes > 8) errs.push(`16px variant has ${shapes} pieces: at most 8`);
+      if (/class="hl"/.test(svg)) warns.push("16px variant keeps a gloss: drop it unless it is the only light cue");
+      if (!/-g3\)/.test(svg)) errs.push("16px variant lost its tier-3 depth cue");
+    }
     if (!cssExists) warns.push(`no ${name}.css: colour icons ship hover motion and an on state`);
-    else {
+    else if (!small) {
       const css = readFileSync(join(dir, `${name}.css`), "utf8");
       if (!/prefers-reduced-motion/.test(css)) errs.push("css missing prefers-reduced-motion block");
       if (!/@keyframes ei-/.test(css)) errs.push("css has no ei- hover keyframes");
@@ -73,7 +83,12 @@ for (const f of files) {
     }
     for (const p of paths) {
       const sw = p.tag.match(/stroke-width="([\d.]+)"/);
-      if (sw && /class="l\d"/.test(p.tag) && +sw[1] < 1.6) warns.push(`line width ${sw[1]} is under 1.6: it fades at 16px`);
+      if (sw && /class="l\d"/.test(p.tag) && +sw[1] < (small ? 2 : 1.6)) (small ? errs : warns).push(`line width ${sw[1]} is under ${small ? 2 : 1.6}: it fades at 16px`);
+      if (/class="(rim|hl|l\d)"/.test(p.tag) || /class="rim"/.test(p.tag)) continue;
+      const b = bbox(p.d);
+      const narrow = Math.min(b.x1 - b.x0, b.y1 - b.y0);
+      if (narrow < 1.5) errs.push(`a filled shape is ${narrow.toFixed(1)} units on its narrow axis: under 1.5 it vanishes`);
+      else if (small && narrow < 2.5) errs.push(`a filled shape is ${narrow.toFixed(1)} units on its narrow axis: minimum 2.5 at 16px (grow it or drop it with "sm":false)`);
     }
   } else {
     if (!/stroke-width="1.75"/.test(svg) && paths.length) errs.push("glyph stroke must be 1.75");
@@ -81,7 +96,7 @@ for (const f of files) {
   }
   const status = errs.length ? "FAIL" : warns.length ? "warn" : "ok  ";
   if (errs.length) failures++;
-  console.log(`${status} ${name}`);
+  console.log(`${status} ${small ? name + "-16" : name}`);
   for (const e of errs) console.log(`     error: ${e}`);
   for (const w of warns) console.log(`     note:  ${w}`);
 }

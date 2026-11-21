@@ -13,10 +13,13 @@ plus hover motion and an on/off state in plain CSS.
 - `scripts/paints.mjs` derives light and dark paints from one accent and prints contrast
   ratios for marks, body, plate and rim, with pass/fail targets.
 - `scripts/check.mjs` lints a folder: live area, piece and tier counts, ids, motion rules.
-- `scripts/preview.mjs` builds a sheet at 16, 24, 48 and 96px on light and dark, with off,
-  on, mid-move and hover cells, and can screenshot it (`--png`, optionally `--cdp`).
+- Every colour icon ships a full file and a simplified `<name>-16.svg` for sizes up to 20px.
+- `scripts/preview.mjs` builds a sheet at 16 (small and full), 24, 48 and 96px in three real
+  renders (light, `prefers-color-scheme` dark, `.dark` class) and asserts the dark paths match
+  (`--png`), and records hover/on/off motion to GIF and MP4 with overflow, seam, duration and
+  reduced-motion checks (`--motion`). Optionally `--cdp` for a shared Chrome.
 - A mandatory render-and-fix loop, a detail budget per size, archetype recipes, motion
-  recipes, and ten worked examples (seven colour, three glyph) with their specs.
+  recipes, and eighteen worked examples (fifteen colour, three glyph) with their specs.
 
-Needs `node` 22 or newer. Screenshots use a local Chrome or any Chrome DevTools endpoint.
+Needs `node` 22 or newer, and `ffmpeg` for the motion recordings. Screenshots use a local Chrome or any Chrome DevTools endpoint.
 Built for Claude Code, but the process is not tool-specific.

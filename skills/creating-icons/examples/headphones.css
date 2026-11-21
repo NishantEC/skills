@@ -1,0 +1,12 @@
+.ic-headphones [data-part]{transform-box:fill-box;transform-origin:center}
+.ic-headphones [data-part="cups"]{transition:transform 380ms cubic-bezier(.34,1.45,.64,1),opacity 260ms ease,stroke-dashoffset 380ms ease}
+.ic-headphones [data-part="badge"]{transform:scale(0);transform-origin:center;transition:transform 420ms cubic-bezier(.68,-.55,.27,1.55)}
+
+.ic-headphones:hover [data-part="cups"],:hover>.ic-headphones [data-part="cups"]{animation:ei-headphones-beat 900ms ease-in-out}
+
+.ic-headphones[data-state="on"] [data-part="cups"]{transform:scaleX(.9)}
+.ic-headphones[data-state="on"] [data-part="badge"]{transform:scale(1);transition-delay:200ms}
+
+@keyframes ei-headphones-beat{0%,100%{transform:scale(1)}30%{transform:scale(1.08)}50%{transform:scale(.98)}70%{transform:scale(1.04)}85%{transform:scale(.99)}}
+
+@media (prefers-reduced-motion:reduce){.ic-headphones [data-part],.ic-headphones:hover [data-part],:hover>.ic-headphones [data-part]{animation:none!important;transition:none!important}}

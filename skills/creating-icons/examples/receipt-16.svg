@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="ic ic-receipt ic-sm" fill="none" overflow="visible">
+  <style>
+    .ic-receipt{--g3a:#dee0fa;--g3b:#bdc1f5;--g2a:#adb1f3;--g2b:#8288ec;--g1a:#5e66e7;--g1b:#494fb8;--ln1:#2f3378;--ln2:#4349aa;--ln3:#a5a9f1;--edge:#4349aa;--sh:rgb(91 99 230 / .32);--ring:#fff}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-receipt{--g3a:#94a3fc;--g3b:#7381e9;--g2a:#c9d2fd;--g2b:#9caafe;--g1a:#7d8cfe;--g1b:#5356e7;--ln1:#210287;--ln2:#b4c0fe;--ln3:#9caafb;--edge:#e1e7fe;--sh:rgb(0 0 0 / .55);--ring:#18181b}}
+    :root.dark .ic-receipt,:root[data-theme=dark] .ic-receipt{--g3a:#94a3fc;--g3b:#7381e9;--g2a:#c9d2fd;--g2b:#9caafe;--g1a:#7d8cfe;--g1b:#5356e7;--ln1:#210287;--ln2:#b4c0fe;--ln3:#9caafb;--edge:#e1e7fe;--sh:rgb(0 0 0 / .55);--ring:#18181b}
+    .ic-receipt .g1a{stop-color:var(--g1a)}.ic-receipt .g1b{stop-color:var(--g1b)}
+    .ic-receipt .g2a{stop-color:var(--g2a)}.ic-receipt .g2b{stop-color:var(--g2b)}
+    .ic-receipt .g3a{stop-color:var(--g3a)}.ic-receipt .g3b{stop-color:var(--g3b)}
+    .ic-receipt .l1{stroke:var(--ln1)}.ic-receipt .l2{stroke:var(--ln2)}.ic-receipt .l3{stroke:var(--ln3)}
+    .ic-receipt .rim{stroke:var(--edge)}.ic-receipt .bd{stroke:var(--ring)}
+    .ic-receipt .sh{flood-color:var(--sh)}
+    .ic-receipt .hl{fill:#fff;fill-opacity:.42}
+    .ic-receipt [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-receipt[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <defs><linearGradient id="ic-receipt-sm-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g1a"/><stop offset="1" class="g1b"/></linearGradient><linearGradient id="ic-receipt-sm-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g2a"/><stop offset="1" class="g2b"/></linearGradient><linearGradient id="ic-receipt-sm-g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g3a"/><stop offset="1" class="g3b"/></linearGradient><filter id="ic-receipt-sm-sh" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.1"/><feOffset dy="1.3" result="o"/><feFlood class="sh"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <g filter="url(#ic-receipt-sm-sh)">
+  <g>
+    <path class="rim" d="M10 5.5H18.5Q21 5.5 21 8V18.5Q21 21 18.5 21H10Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M10 5.5H18.5Q21 5.5 21 8V18.5Q21 21 18.5 21H10Z" fill="url(#ic-receipt-sm-g3)"/>
+    <g data-part="paper"><path class="rim" d="M7 2.5H16.5Q18.5 2.5 18.5 4.5V20.5L16.3 19.2L14.2 20.5L12 19.2L9.8 20.5L7.7 19.2L5.5 20.5V4Q5.5 2.5 7 2.5Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M7 2.5H16.5Q18.5 2.5 18.5 4.5V20.5L16.3 19.2L14.2 20.5L12 19.2L9.8 20.5L7.7 19.2L5.5 20.5V4Q5.5 2.5 7 2.5Z" fill="url(#ic-receipt-sm-g2)"/><path class="l1" d="M8.6 8h6.8M8.6 11.4h6.8M8.6 14.8h3.6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+  </g>
+    <circle data-part="badge" class="bd" cx="19.2" cy="19.4" r="2.6" fill="url(#ic-receipt-sm-g1)" stroke-width="1.2"/>
+  </g>
+</svg>

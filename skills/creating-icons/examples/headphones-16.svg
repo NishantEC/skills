@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="ic ic-headphones ic-sm" fill="none" overflow="visible">
+  <style>
+    .ic-headphones{--g3a:#e8e2fc;--g3b:#d1c4f9;--g2a:#c5b6f8;--g2b:#a78ff4;--g1a:#8d6ff0;--g1b:#6f56c0;--ln1:#48387d;--ln2:#6750b2;--ln3:#bfaef7;--edge:#6750b2;--sh:rgb(139 108 240 / .32);--ring:#fff}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-headphones{--g3a:#ab99fe;--g3b:#8d79e1;--g2a:#d3cdfe;--g2b:#b1a2fb;--g1a:#9a81fa;--g1b:#744bdc;--ln1:#35007a;--ln2:#c3bafc;--ln3:#b1a4f4;--edge:#e7e4ff;--sh:rgb(0 0 0 / .55);--ring:#18181b}}
+    :root.dark .ic-headphones,:root[data-theme=dark] .ic-headphones{--g3a:#ab99fe;--g3b:#8d79e1;--g2a:#d3cdfe;--g2b:#b1a2fb;--g1a:#9a81fa;--g1b:#744bdc;--ln1:#35007a;--ln2:#c3bafc;--ln3:#b1a4f4;--edge:#e7e4ff;--sh:rgb(0 0 0 / .55);--ring:#18181b}
+    .ic-headphones .g1a{stop-color:var(--g1a)}.ic-headphones .g1b{stop-color:var(--g1b)}
+    .ic-headphones .g2a{stop-color:var(--g2a)}.ic-headphones .g2b{stop-color:var(--g2b)}
+    .ic-headphones .g3a{stop-color:var(--g3a)}.ic-headphones .g3b{stop-color:var(--g3b)}
+    .ic-headphones .l1{stroke:var(--ln1)}.ic-headphones .l2{stroke:var(--ln2)}.ic-headphones .l3{stroke:var(--ln3)}
+    .ic-headphones .rim{stroke:var(--edge)}.ic-headphones .bd{stroke:var(--ring)}
+    .ic-headphones .sh{flood-color:var(--sh)}
+    .ic-headphones .hl{fill:#fff;fill-opacity:.42}
+    .ic-headphones [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-headphones[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <defs><linearGradient id="ic-headphones-sm-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g1a"/><stop offset="1" class="g1b"/></linearGradient><linearGradient id="ic-headphones-sm-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g2a"/><stop offset="1" class="g2b"/></linearGradient><linearGradient id="ic-headphones-sm-g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="g3a"/><stop offset="1" class="g3b"/></linearGradient><filter id="ic-headphones-sm-sh" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="1.1"/><feOffset dy="1.3" result="o"/><feFlood class="sh"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <g filter="url(#ic-headphones-sm-sh)">
+  <g>
+    <path class="rim" d="M3.4 13A8.6 8.6 0 0 1 20.6 13V14.5H18V13A6 6 0 0 0 6 13V14.5H3.4Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M3.4 13A8.6 8.6 0 0 1 20.6 13V14.5H18V13A6 6 0 0 0 6 13V14.5H3.4Z" fill="url(#ic-headphones-sm-g3)"/>
+    <path class="l2" d="M5.7 14.5V13A6.3 6.3 0 0 1 18.3 13V14.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <g data-part="cups"><path class="rim" d="M3.2 14.4Q3.2 12.9 4.7 12.9H6.7Q8.2 12.9 8.2 14.4V18.6Q8.2 20.1 6.7 20.1H4.7Q3.2 20.1 3.2 18.6Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M3.2 14.4Q3.2 12.9 4.7 12.9H6.7Q8.2 12.9 8.2 14.4V18.6Q8.2 20.1 6.7 20.1H4.7Q3.2 20.1 3.2 18.6Z" fill="url(#ic-headphones-sm-g1)"/><path class="rim" d="M20.8 14.4Q20.8 12.9 19.3 12.9H17.3Q15.8 12.9 15.8 14.4V18.6Q15.8 20.1 17.3 20.1H19.3Q20.8 20.1 20.8 18.6Z" stroke-width="1.5" stroke-linejoin="round"/><path d="M20.8 14.4Q20.8 12.9 19.3 12.9H17.3Q15.8 12.9 15.8 14.4V18.6Q15.8 20.1 17.3 20.1H19.3Q20.8 20.1 20.8 18.6Z" fill="url(#ic-headphones-sm-g1)"/></g>
+  </g>
+    <circle data-part="badge" class="bd" cx="12" cy="11" r="2.4" fill="url(#ic-headphones-sm-g1)" stroke-width="1.2"/>
+  </g>
+</svg>
