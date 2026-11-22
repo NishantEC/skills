@@ -23,6 +23,7 @@ One JSON file per icon, compose turns it into `<name>.svg` (+ `<name>.css`).
 
 - `name`: kebab-case, what it depicts. Becomes the file name and the `ic-<name>` class.
 - `accent`: hex from `references/accents.md`.
+- `style`: omit for layered (compose then also writes `<name>.flat.svg` and `<name>-16.flat.svg`); `"flat"` makes `<name>.svg` itself flat (tone fills, no rim, gradient, gloss or shadow; `edge` and gloss pieces are ignored).
 - `edge`: `outside` (1.5 rim behind every shape, default), `inside` (2.2 rim clipped inside tiers 2 and 3), `none`.
 - `badge`: small dot that scales in when `data-state="on"`. Put it in a free corner, r 2.4 to 2.7.
 - `pieces`, drawn in order, back to front:

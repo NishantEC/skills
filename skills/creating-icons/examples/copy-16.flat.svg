@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="ic ic-copy ic-flat ic-sm" fill="none" overflow="visible">
+  <style>
+    .ic-copy{--f3:#cac2fd;--f2:#9577fc;--f1:#381678;--bd:#7e5de0}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-copy{--f3:#735fbe;--f2:#bdb2fc;--f1:#412385;--bd:#d7d1fd}}
+    :root.dark .ic-copy,:root[data-theme=dark] .ic-copy{--f3:#735fbe;--f2:#bdb2fc;--f1:#412385;--bd:#d7d1fd}
+    .ic-copy .f1{fill:var(--f1)}.ic-copy .f2{fill:var(--f2)}.ic-copy .f3{fill:var(--f3)}
+    .ic-copy .s1{stroke:var(--f1)}.ic-copy .s2{stroke:var(--f2)}.ic-copy .s3{stroke:var(--f3)}
+    .ic-copy .fb{fill:var(--bd)}
+    .ic-copy [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-copy[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <g>
+    <g data-part="back"><path class="f3" d="M11.5 3Q9 3 9 5.5V6.5H17.5Q19.5 6.5 19.5 8.5V15H18.5Q21 15 21 12.5V5.5Q21 3 18.5 3Z"/><path class="f3" d="M12 3H18Q21 3 21 6V12Q21 15 18 15H15V8.5Q15 6.5 13 6.5H9V6Q9 3 12 3Z"/></g>
+    <g data-part="front"><path class="f2" d="M6 8.5H12Q15.5 8.5 15.5 12V18Q15.5 21.5 12 21.5H6Q3 21.5 3 18V12Q3 8.5 6 8.5Z"/><path class="s1" d="M6.2 14.2h6.1M6.2 17.4h3.8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+  </g>
+    <circle data-part="badge" class="fb" cx="19.2" cy="19.2" r="2.6"/>
+</svg>

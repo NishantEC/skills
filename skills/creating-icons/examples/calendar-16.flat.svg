@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="ic ic-calendar ic-flat ic-sm" fill="none" overflow="visible">
+  <style>
+    .ic-calendar{--f3:#a4d3e8;--f2:#3e9fc4;--f1:#01394b;--bd:#1c86aa}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-calendar{--f3:#397b95;--f2:#73cbef;--f1:#004459;--bd:#a3e2fe}}
+    :root.dark .ic-calendar,:root[data-theme=dark] .ic-calendar{--f3:#397b95;--f2:#73cbef;--f1:#004459;--bd:#a3e2fe}
+    .ic-calendar .f1{fill:var(--f1)}.ic-calendar .f2{fill:var(--f2)}.ic-calendar .f3{fill:var(--f3)}
+    .ic-calendar .s1{stroke:var(--f1)}.ic-calendar .s2{stroke:var(--f2)}.ic-calendar .s3{stroke:var(--f3)}
+    .ic-calendar .fb{fill:var(--bd)}
+    .ic-calendar [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-calendar[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <g>
+    <path class="f3" d="M7.5 4H18.5Q21.5 4 21.5 7V16.5Q21.5 19.5 18.5 19.5H7.5Z"/>
+    <path class="f2" d="M2.5 9Q2.5 6 5.5 6H16.5Q19.5 6 19.5 9V18.5Q19.5 21.5 16.5 21.5H5.5Q2.5 21.5 2.5 18.5Z"/>
+    <path class="f1" d="M2.5 10.5V9Q2.5 6 5.5 6H16.5Q19.5 6 19.5 9V10.5Z"/>
+    <path class="s1" d="M7 3.2V7.6M15 3.2V7.6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <g data-part="today"><path class="f1" d="M12.8 16Q12.8 14.5 14.3 14.5H16.5Q18 14.5 18 16V18.2Q18 19.7 16.5 19.7H14.3Q12.8 19.7 12.8 18.2Z"/></g>
+  </g>
+    <circle data-part="badge" class="fb" cx="19.2" cy="19.2" r="2.6"/>
+</svg>

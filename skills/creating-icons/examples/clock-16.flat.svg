@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="ic ic-clock ic-flat ic-sm" fill="none" overflow="visible">
+  <style>
+    .ic-clock{--f3:#a4d3e8;--f2:#3e9fc4;--f1:#01394b;--bd:#1c86aa}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-clock{--f3:#397b95;--f2:#73cbef;--f1:#004459;--bd:#a3e2fe}}
+    :root.dark .ic-clock,:root[data-theme=dark] .ic-clock{--f3:#397b95;--f2:#73cbef;--f1:#004459;--bd:#a3e2fe}
+    .ic-clock .f1{fill:var(--f1)}.ic-clock .f2{fill:var(--f2)}.ic-clock .f3{fill:var(--f3)}
+    .ic-clock .s1{stroke:var(--f1)}.ic-clock .s2{stroke:var(--f2)}.ic-clock .s3{stroke:var(--f3)}
+    .ic-clock .fb{fill:var(--bd)}
+    .ic-clock [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-clock[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <g>
+    <g data-part="bells"><path class="f3" d="M2.9 6.2a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0ZM15.7 6.2a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0Z"/></g>
+    <path class="f3" d="M3.5 13a8.5 8.5 0 1 0 17 0a8.5 8.5 0 1 0 -17 0Z"/>
+    <path class="f2" d="M5.8 13a6.2 6.2 0 1 0 12.4 0a6.2 6.2 0 1 0 -12.4 0Z"/>
+    <g data-part="minute"><path class="s1" d="M12 13V8.9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <path class="s1" d="M12 13L14.6 14.6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+    <circle data-part="badge" class="fb" cx="19.4" cy="19.4" r="2.6"/>
+</svg>

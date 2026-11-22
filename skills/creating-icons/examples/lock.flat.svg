@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="ic ic-lock ic-flat" fill="none" overflow="visible">
+  <style>
+    .ic-lock{--f3:#9fd7d1;--f2:#28a79e;--f1:#023c38;--bd:#098d85}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-lock{--f3:#2e807a;--f2:#67d3c9;--f1:#014743;--bd:#94eae1}}
+    :root.dark .ic-lock,:root[data-theme=dark] .ic-lock{--f3:#2e807a;--f2:#67d3c9;--f1:#014743;--bd:#94eae1}
+    .ic-lock .f1{fill:var(--f1)}.ic-lock .f2{fill:var(--f2)}.ic-lock .f3{fill:var(--f3)}
+    .ic-lock .s1{stroke:var(--f1)}.ic-lock .s2{stroke:var(--f2)}.ic-lock .s3{stroke:var(--f3)}
+    .ic-lock .fb{fill:var(--bd)}
+    .ic-lock [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-lock[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <defs><mask id="ic-lock-flat-m" maskUnits="userSpaceOnUse" x="-2" y="-2" width="28" height="28"><rect x="-2" y="-2" width="28" height="28" fill="#fff"/><path d="M9.9 15a1.6 1.6 0 1 0 3.2 0a1.6 1.6 0 1 0 -3.2 0Z" fill="#000"/><path d="M11.5 15.6V18.4" stroke="#000" stroke-width="1.8" stroke-linecap="round" fill="none"/></mask></defs>
+  <g mask="url(#ic-lock-flat-m)">
+    <path class="f3" d="M5.5 12Q5.5 9 8.5 9H18.5Q21.5 9 21.5 12V17Q21.5 20 18.5 20H8.5Q5.5 20 5.5 17Z"/>
+    <g data-part="shackle"><path class="s2" d="M7.2 13V7.8A4.3 4.3 0 0 1 15.8 7.8V13" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <path class="f1" d="M3.5 13.5Q3.5 10.5 6.5 10.5H16.5Q19.5 10.5 19.5 13.5V18.5Q19.5 21.5 16.5 21.5H6.5Q3.5 21.5 3.5 18.5Z"/>
+  </g>
+    <circle data-part="badge" class="fb" cx="19.2" cy="19.4" r="2.6"/>
+</svg>

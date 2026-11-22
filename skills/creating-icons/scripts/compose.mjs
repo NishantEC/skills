@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, dirname, basename } from "node:path";
-import { paintsFor } from "./paints.mjs";
+import { paintsFor, flatPaintsFor } from "./paints.mjs";
 import { mirrorPath, bbox } from "./lib/path.mjs";
 
 const usage = `usage: node compose.mjs <spec.json> [outDir]
-Writes <name>.svg (and <name>.css when the spec has "motion") next to the spec or into outDir.`;
+Writes <name>.svg, <name>-16.svg and <name>.flat.svg, <name>-16.flat.svg ("style":"flat" makes name.svg itself flat), and <name>.css when the spec has "motion" next to the spec or into outDir.`;
 
 const [specPath, outDir = dirname(specPath)] = process.argv.slice(2);
 if (!specPath) {
@@ -72,6 +72,62 @@ function smallWarnings(pieces) {
     if (w < 2.5) warns.push(`a tier-${p.tier}${p.part ? ` "${p.part}"` : ""} shape is ${w.toFixed(1)} units on its narrow axis: under 2.5 it vanishes at 16px, grow it with an "sm" override`);
   }
   return warns;
+}
+
+function composeFlat(small = false) {
+  const c = `ic-${name}`;
+  const idp = `${c}${small ? "-sm" : ""}-flat`;
+  const { light, dark } = flatPaintsFor(spec.accent);
+  const vars = (p) => Object.entries(p).map(([k, v]) => `--${k}:${v}`).join(";");
+  const pieces = expand(small ? resolveSmall(spec.pieces) : spec.pieces).filter((p) => p.tier !== "gloss");
+  if (small) for (const w of smallWarnings(pieces)) console.error(`warn ${name}-16.flat: ${w}`);
+  const cuts = (spec.cuts || []).filter((k) => !(small && k.sm === false));
+  const maskFor = (list, id) =>
+    `<mask id="${id}" maskUnits="userSpaceOnUse" x="-2" y="-2" width="28" height="28"><rect x="-2" y="-2" width="28" height="28" fill="#fff"/>${list
+      .map((k) => (k.width ? `<path d="${k.d}" stroke="#000" stroke-width="${k.width}" stroke-linecap="round" fill="none"/>` : `<path d="${k.d}" fill="#000"/>`))
+      .join("")}</mask>`;
+  const globalCuts = cuts.filter((k) => !k.part);
+  let defs = globalCuts.length ? maskFor(globalCuts, `${idp}-m`) : "";
+  const partCuts = {};
+  for (const k of cuts.filter((k) => k.part)) (partCuts[k.part] ||= []).push(k);
+  for (const [part, list] of Object.entries(partCuts)) defs += maskFor(list, `${idp}-m-${part}`);
+  const draw = (p) =>
+    p.kind === "line"
+      ? `<path class="s${p.tier}" d="${p.d}" stroke-width="${p.width || 1.8}" stroke-linecap="round" stroke-linejoin="round"/>`
+      : `<path class="f${p.tier}" d="${p.d}"/>`;
+  const groups = [];
+  for (const p of pieces) {
+    const last = groups[groups.length - 1];
+    if (last && p.part && last.part === p.part) last.items.push(p);
+    else groups.push({ part: p.part, items: [p] });
+  }
+  const body = groups
+    .map((g) => {
+      const inner = g.items.map(draw).join("");
+      if (!g.part) return inner;
+      const m = partCuts[g.part] ? ` mask="url(#${idp}-m-${g.part})"` : "";
+      return `<g data-part="${g.part}"${m}>${inner}</g>`;
+    })
+    .join("\n    ");
+  const badge = spec.badge ? `\n    <circle data-part="badge" class="fb" cx="${spec.badge.cx}" cy="${spec.badge.cy}" r="${spec.badge.r}"/>` : "";
+  const css = `
+    .${c}{${vars(light)}}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .${c}{${vars(dark)}}}
+    :root.dark .${c},:root[data-theme=dark] .${c}{${vars(dark)}}
+    .${c} .f1{fill:var(--f1)}.${c} .f2{fill:var(--f2)}.${c} .f3{fill:var(--f3)}
+    .${c} .s1{stroke:var(--f1)}.${c} .s2{stroke:var(--f2)}.${c} .s3{stroke:var(--f3)}
+    .${c} .fb{fill:var(--bd)}${spec.badge ? `
+    .${c} [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .${c}[data-state=on] [data-part=badge]{transform:scale(1)}` : ""}`;
+  const cutAttr = globalCuts.length ? ` mask="url(#${idp}-m)"` : "";
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="${small ? 16 : 24}" height="${small ? 16 : 24}" class="ic ${c} ic-flat${small ? " ic-sm" : ""}" fill="none" overflow="visible">
+  <style>${css}
+  </style>${defs ? `\n  <defs>${defs}</defs>` : ""}
+  <g${cutAttr}>
+    ${body}
+  </g>${badge}
+</svg>
+`;
 }
 
 function composeIcon(small = false) {
@@ -194,12 +250,19 @@ function composeCss() {
   return out.join("\n") + "\n";
 }
 
-const svg = spec.kind === "glyph" ? composeGlyph() : composeIcon();
+const glyph = spec.kind === "glyph";
+const flatOnly = spec.style === "flat";
+const svg = glyph ? composeGlyph() : flatOnly ? composeFlat() : composeIcon();
 writeFileSync(join(outDir, `${name}.svg`), svg);
 const wrote = [`${name}.svg`];
-if (spec.kind !== "glyph") {
-  writeFileSync(join(outDir, `${name}-16.svg`), composeIcon(true));
+if (!glyph) {
+  writeFileSync(join(outDir, `${name}-16.svg`), flatOnly ? composeFlat(true) : composeIcon(true));
   wrote.push(`${name}-16.svg`);
+  if (!flatOnly) {
+    writeFileSync(join(outDir, `${name}.flat.svg`), composeFlat());
+    writeFileSync(join(outDir, `${name}-16.flat.svg`), composeFlat(true));
+    wrote.push(`${name}.flat.svg`, `${name}-16.flat.svg`);
+  }
 }
 if (spec.motion && spec.kind !== "glyph") {
   writeFileSync(join(outDir, `${name}.css`), composeCss());

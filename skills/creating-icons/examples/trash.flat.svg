@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="ic ic-trash ic-flat" fill="none" overflow="visible">
+  <style>
+    .ic-trash{--f3:#ffb6a3;--f2:#ec5e39;--f1:#601200;--bd:#d0441c}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-trash{--f3:#b34e34;--f2:#fda38b;--f1:#6f1b02;--bd:#fdcabc}}
+    :root.dark .ic-trash,:root[data-theme=dark] .ic-trash{--f3:#b34e34;--f2:#fda38b;--f1:#6f1b02;--bd:#fdcabc}
+    .ic-trash .f1{fill:var(--f1)}.ic-trash .f2{fill:var(--f2)}.ic-trash .f3{fill:var(--f3)}
+    .ic-trash .s1{stroke:var(--f1)}.ic-trash .s2{stroke:var(--f2)}.ic-trash .s3{stroke:var(--f3)}
+    .ic-trash .fb{fill:var(--bd)}
+    .ic-trash [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-trash[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <g>
+    <path class="f3" d="M5.6 8.5Q5.5 7.5 6.5 7.5H17.5Q18.5 7.5 18.4 8.5L17.5 19.1Q17.3 21.5 14.9 21.5H9.1Q6.7 21.5 6.5 19.1Z"/>
+    <path class="s1" d="M10.6 12.5v5.2M13.8 12.5v5.2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <g data-part="lid"><path class="f2" d="M9.4 2.6H14.6Q15.8 2.6 15.8 3.8V5.4H8.2V3.8Q8.2 2.6 9.4 2.6Z"/><path class="f2" d="M4.7 5H19.3Q21 5 21 6.7Q21 8.4 19.3 8.4H4.7Q3 8.4 3 6.7Q3 5 4.7 5Z"/></g>
+  </g>
+    <circle data-part="badge" class="fb" cx="19.2" cy="19.4" r="2.6"/>
+</svg>

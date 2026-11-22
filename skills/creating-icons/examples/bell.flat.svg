@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="ic ic-bell ic-flat" fill="none" overflow="visible">
+  <style>
+    .ic-bell{--f3:#edc28b;--f2:#c58202;--f1:#472c00;--bd:#a66d00}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-bell{--f3:#986611;--f2:#f7ad3b;--f1:#553600;--bd:#fdcf92}}
+    :root.dark .ic-bell,:root[data-theme=dark] .ic-bell{--f3:#986611;--f2:#f7ad3b;--f1:#553600;--bd:#fdcf92}
+    .ic-bell .f1{fill:var(--f1)}.ic-bell .f2{fill:var(--f2)}.ic-bell .f3{fill:var(--f3)}
+    .ic-bell .s1{stroke:var(--f1)}.ic-bell .s2{stroke:var(--f2)}.ic-bell .s3{stroke:var(--f3)}
+    .ic-bell .fb{fill:var(--bd)}
+    .ic-bell [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-bell[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <g>
+    <path class="f3" d="M5.5 10a7.5 7.5 0 1 0 15 0a7.5 7.5 0 1 0 -15 0Z"/>
+    <g data-part="clapper"><path class="f1" d="M10 19.4a2 2 0 1 0 4 0a2 2 0 1 0 -4 0Z"/></g>
+    <g data-part="bell"><path class="f2" d="M12 4.5C15.6 4.5 17.6 7.2 17.6 10.6V13Q17.6 14.6 19.2 15.6Q20.5 16.4 20.5 17Q20.5 18 19.3 18H4.7Q3.5 18 3.5 17Q3.5 16.4 4.8 15.6Q6.4 14.6 6.4 13V10.6C6.4 7.2 8.4 4.5 12 4.5Z"/><path class="f1" d="M12 2.6Q13.2 2.6 13.2 3.8V5.4H10.8V3.8Q10.8 2.6 12 2.6Z"/></g>
+  </g>
+    <circle data-part="badge" class="fb" cx="19.6" cy="4.9" r="2.4"/>
+</svg>

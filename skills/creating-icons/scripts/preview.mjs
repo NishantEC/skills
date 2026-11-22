@@ -15,14 +15,17 @@ const flag = (name) => {
 const cdp = flag("--cdp");
 const png = flag("--png");
 const motionDir = flag("--motion");
+const compare = flag("--compare");
 const freeze = Number(flag("--freeze") ?? 0.4);
 const fps = Number(flag("--fps") ?? 30);
 const [dir, out = "preview.html"] = argv;
 if (!dir) {
-  console.error(`usage: node preview.mjs <dir-with-svgs> [out.html] [--png out.png] [--motion outDir] [--cdp http://127.0.0.1:9333] [--freeze 0.4] [--fps 30]
+  console.error(`usage: node preview.mjs <dir-with-svgs> [out.html] [--png out.png] [--motion outDir] [--compare styles.png] [--cdp http://127.0.0.1:9333] [--freeze 0.4] [--fps 30]
 
 --png     one sheet: light | dark by prefers-color-scheme | dark by .dark class. The three are real renders of the
           unmodified SVG CSS, and the script asserts the two dark ones resolve to identical paints (computed CSS variables) and that .light beats a dark OS.
+--compare one sheet with every icon in all three styles side by side (layered | flat | glyph where one exists) at 16, 24 and 48px,
+          light, dark by prefers-color-scheme and dark by .dark class.
 --motion  records each icon's hover, on and off motion to <outDir>/<name>.gif and .mp4, writes frames and a contact sheet,
           and reports overflow past the 24 box, loop seams and reduced-motion behaviour.`);
   process.exit(1);
@@ -42,7 +45,7 @@ function cell(svg, size, attrs = "") {
   return `<span class="cell" style="width:${size}px;height:${size}px">${unique(sized)}</span>`;
 }
 
-const files = readdirSync(dir).filter((f) => f.endsWith(".svg") && !/-16\.svg$/.test(f)).sort();
+const files = readdirSync(dir).filter((f) => f.endsWith(".svg") && !/-16(\.flat)?\.svg$/.test(f) && !/\.flat\.svg$/.test(f)).sort();
 const names = files.map((f) => basename(f, ".svg"));
 
 let motionCss = "";
@@ -112,7 +115,7 @@ const runs = [
   { key: "darkOsLightClass", scheme: "dark", cls: "light", names: true },
 ];
 
-const browser = png || motionDir ? await openBrowser(cdp) : null;
+const browser = png || motionDir || compare ? await openBrowser(cdp) : null;
 try {
   if (png) {
     const shots = {};
@@ -127,7 +130,7 @@ try {
         await p.fitHeight();
         await new Promise((res) => setTimeout(res, 150));
         shots[r.key] = await p.shot();
-        vars[r.key] = await p.eval(`[...document.querySelectorAll('svg.ic')].map((s) => { const c = getComputedStyle(s); return ['g1a','g1b','g2a','g2b','g3a','g3b','ln1','ln2','ln3','edge','sh','ring'].map((k) => c.getPropertyValue('--' + k).trim()).join('|'); }).join('\\n')`);
+        vars[r.key] = await p.eval(`[...document.querySelectorAll('svg.ic')].map((s) => { const c = getComputedStyle(s); return ['g1a','g1b','g2a','g2b','g3a','g3b','ln1','ln2','ln3','edge','sh','ring','f1','f2','f3','bd'].map((k) => c.getPropertyValue('--' + k).trim()).join('|'); }).join('\\n')`);
       } finally {
         await p.close();
       }
@@ -155,6 +158,56 @@ figure{margin:0}figcaption{background:#444;color:#fff;padding:6px 10px}img{displ
     console.log(`dark paths (prefers-color-scheme vs .dark), computed paints of every icon: ${darkSame ? "identical" : "DIFFER: fix the CSS in compose.mjs"}`);
     console.log(`.light class beats a dark OS: ${lightWins ? "yes" : "NO: fix the :not(.light) guard"}`);
     if (!darkSame || !lightWins) process.exitCode = 1;
+  }
+  if (compare) {
+    const read = (f) => (existsSync(join(dir, f)) ? readFileSync(join(dir, f), "utf8") : null);
+    const kindOf = (svg) => (!svg ? null : /class="[^"]*\bgl\b/.test(svg) ? "glyph" : /\bic-flat\b/.test(svg) ? "flat" : "layered");
+    const bases = [...new Set(readdirSync(dir).filter((f) => f.endsWith(".svg")).map((f) => f.replace(/(-16)?(\.flat)?\.svg$/, "")))].sort();
+    const sizes = [16, 24, 48];
+    const group = (svg16, svg) => (svg ? `<div class="g">${sizes.map((z) => cell(z === 16 && svg16 ? svg16 : svg, z)).join("")}</div>` : `<div class="g"></div>`);
+    const crow = (b) => {
+      const plain = read(`${b}.svg`);
+      const plainKind = kindOf(plain);
+      const layered = plainKind === "layered" ? plain : null;
+      const flat = plainKind === "flat" ? plain : read(`${b}.flat.svg`);
+      const glyphSvg = plainKind === "glyph" ? plain : null;
+      const l16 = layered && read(`${b}-16.svg`);
+      const f16 = plainKind === "flat" ? read(`${b}-16.svg`) : read(`${b}-16.flat.svg`);
+      return `<div class="row"><div class="n">${b}</div>${group(l16, layered)}<i class="sep"></i>${group(f16, flat)}<i class="sep"></i>${group(null, glyphSvg)}</div>`;
+    };
+    const ccss = `${css}.g{display:flex;gap:14px;align-items:center;width:140px;padding:10px 12px}.sep{height:48px}`;
+    const head = (n) => `<div class="row" style="opacity:.6"><div class="n">${n ? "" : ""}</div><div class="g" style="font-size:11px">layered</div><i class="sep" style="opacity:0"></i><div class="g" style="font-size:11px">flat</div><i class="sep" style="opacity:0"></i><div class="g" style="font-size:11px">glyph</div></div>`;
+    const cpage = (cls, names) => `<!doctype html><html class="${cls}"><meta charset="utf-8"><meta name="color-scheme" content="light dark"><style>${ccss}</style><body class="${names ? "" : "names-off"}">${head(names)}${bases.map(crow).join("")}`;
+    const cshots = {};
+    for (const r of runs.slice(0, 3)) {
+      const file = `${stem}.cmp.${r.key}.html`;
+      writeFileSync(file, cpage(r.cls, r.names));
+      const p = await browser.newPage({ width: r.names ? 640 : 540, colorScheme: r.scheme });
+      try {
+        await p.load(file);
+        await new Promise((res) => setTimeout(res, 400));
+        await p.fitHeight();
+        cshots[r.key] = await p.shot();
+      } finally {
+        await p.close();
+      }
+    }
+    const uri = (b) => `data:image/png;base64,${b.toString("base64")}`;
+    const csheetFile = `${stem}.cmp.sheet.html`;
+    writeFileSync(csheetFile, `<!doctype html><meta charset="utf-8"><style>body{margin:0;font:12px system-ui;background:#888;display:flex;gap:6px}figure{margin:0}figcaption{background:#444;color:#fff;padding:6px 10px}img{display:block;zoom:.5}</style>
+<figure><figcaption>light (each group: 16, 24, 48)</figcaption><img src="${uri(cshots.light)}"></figure>
+<figure><figcaption>dark: prefers-color-scheme</figcaption><img src="${uri(cshots.media)}"></figure>
+<figure><figcaption>dark: .dark class</figcaption><img src="${uri(cshots.class)}"></figure>`);
+    const p = await browser.newPage({ width: 1700, height: 900, dpr: 2 });
+    try {
+      await p.load(csheetFile);
+      await new Promise((res) => setTimeout(res, 300));
+      await p.fitHeight();
+      writeFileSync(resolve(compare), await p.shot());
+    } finally {
+      await p.close();
+    }
+    console.log(`wrote ${compare} (${bases.length} icons, layered | flat | glyph)`);
   }
   if (motionDir) {
     const bad = await recordMotion({ browser, dir: resolve(dir), names, outDir: resolve(motionDir), fps });

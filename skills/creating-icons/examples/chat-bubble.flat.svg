@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" class="ic ic-chat-bubble ic-flat" fill="none" overflow="visible">
+  <style>
+    .ic-chat-bubble{--f3:#fdb0d0;--f2:#e4569d;--f1:#600039;--bd:#c83b84}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-chat-bubble{--f3:#ad4979;--f2:#ff99c5;--f1:#720044;--bd:#fec5dc}}
+    :root.dark .ic-chat-bubble,:root[data-theme=dark] .ic-chat-bubble{--f3:#ad4979;--f2:#ff99c5;--f1:#720044;--bd:#fec5dc}
+    .ic-chat-bubble .f1{fill:var(--f1)}.ic-chat-bubble .f2{fill:var(--f2)}.ic-chat-bubble .f3{fill:var(--f3)}
+    .ic-chat-bubble .s1{stroke:var(--f1)}.ic-chat-bubble .s2{stroke:var(--f2)}.ic-chat-bubble .s3{stroke:var(--f3)}
+    .ic-chat-bubble .fb{fill:var(--bd)}
+    .ic-chat-bubble [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-chat-bubble[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <g>
+    <g data-part="back"><path class="f3" d="M10.5 3.5H18Q21.5 3.5 21.5 7V15.4Q21.5 16.4 20.7 15.8L18 13.5H10.5Q7 13.5 7 10V7Q7 3.5 10.5 3.5Z"/></g>
+    <path class="f2" d="M6 6.5H15Q18.5 6.5 18.5 10V14Q18.5 17.5 15 17.5H10L6.2 20.8Q5.3 21.5 5.3 20.4V17.4Q2.5 17 2.5 14V10Q2.5 6.5 6 6.5Z"/>
+    <g data-part="dot1"><path class="f1" d="M4.85 12a1.25 1.25 0 1 0 2.5 0a1.25 1.25 0 1 0 -2.5 0Z"/></g>
+    <g data-part="dot2"><path class="f1" d="M9.25 12a1.25 1.25 0 1 0 2.5 0a1.25 1.25 0 1 0 -2.5 0Z"/></g>
+    <g data-part="dot3"><path class="f1" d="M13.65 12a1.25 1.25 0 1 0 2.5 0a1.25 1.25 0 1 0 -2.5 0Z"/></g>
+  </g>
+    <circle data-part="badge" class="fb" cx="19.4" cy="19.6" r="2.5"/>
+</svg>

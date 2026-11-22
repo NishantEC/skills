@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { pathToFileURL } from "node:url";
+import { realpathSync } from "node:fs";
 
 const rgb = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
 const toHex = (v) => "#" + v.map((x) => Math.max(0, Math.min(255, Math.round(x))).toString(16).padStart(2, "0")).join("");
@@ -77,6 +78,39 @@ export function paintsFor(hex) {
   return { light, dark };
 }
 
+const FLAT_LEVEL = {
+  light: { f3: [0.84, 0.55], f2: [0.66, 1.0], f1: [0.32, 0.8], bd: [0.58, 1.0] },
+  dark: { f3: [0.55, 0.75], f2: [0.8, 0.95], f1: [0.36, 0.8], bd: [0.88, 0.8] },
+};
+
+export function flatPaintsFor(hex) {
+  const acc = toOklch(hex);
+  const out = {};
+  for (const mode of ["light", "dark"]) {
+    out[mode] = {};
+    for (const [k, [L, c]] of Object.entries(FLAT_LEVEL[mode])) out[mode][k] = fit(L, Math.max(acc.C * c, 0.05), acc.H);
+  }
+  return out;
+}
+
+export function flatReport(hex) {
+  const p = flatPaintsFor(hex);
+  const rows = [];
+  for (const mode of ["light", "dark"]) {
+    const t = p[mode];
+    const check = (label, a, b, min) => {
+      const r = contrast(a, b);
+      rows.push({ label: `${mode} ${label}`, ratio: r, min, ok: r >= min });
+    };
+    check("t1 marks on t2 body", t.f1, t.f2, 3);
+    check("t2 body against t3 plate", t.f2, t.f3, 1.3);
+    check("t2 body against panel", t.f2, PANEL[mode], mode === "dark" ? 5 : 1.8);
+    check("t3 plate against panel", t.f3, PANEL[mode], mode === "dark" ? 1.8 : 1.15);
+    check("t1 marks on t3 plate", t.f1, t.f3, mode === "dark" ? 1.3 : 2);
+  }
+  return { ...p, rows };
+}
+
 export function report(hex) {
   const { light, dark } = paintsFor(hex);
   const rows = [];
@@ -97,11 +131,20 @@ export function report(hex) {
   return { light, dark, rows };
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href) {
   const hex = process.argv[2];
   if (!/^#[0-9a-f]{6}$/i.test(hex || "")) {
-    console.error("usage: node paints.mjs #RRGGBB [--json]");
+    console.error("usage: node paints.mjs #RRGGBB [--json|--flat]");
     process.exit(1);
+  }
+  if (process.argv.includes("--flat")) {
+    const f = flatReport(hex);
+    console.log(`flat accent ${hex}\ntoken  light    dark`);
+    for (const k of Object.keys(f.light)) console.log(`${k.padEnd(6)} ${f.light[k].padEnd(8)} ${f.dark[k]}`);
+    for (const r of f.rows) console.log(`${r.ok ? "ok  " : "LOW "} ${r.ratio.toFixed(2).padStart(5)}  >= ${String(r.min).padEnd(4)} ${r.label}`);
+    const bad = f.rows.filter((r) => !r.ok);
+    console.log(bad.length ? `\n${bad.length} LOW: shift the accent lightness (55 to 65%)` : "\nall flat contrast targets met");
+    process.exit(0);
   }
   const { light, dark, rows } = report(hex);
   if (process.argv.includes("--json")) {

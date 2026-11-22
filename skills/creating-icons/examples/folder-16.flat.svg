@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="ic ic-folder ic-flat ic-sm" fill="none" overflow="visible">
+  <style>
+    .ic-folder{--f3:#bcc7fe;--f2:#7785fa;--f1:#241e80;--bd:#5f67eb}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-folder{--f3:#5b66c5;--f2:#abb9fe;--f1:#2c2b8c;--bd:#ccd5ff}}
+    :root.dark .ic-folder,:root[data-theme=dark] .ic-folder{--f3:#5b66c5;--f2:#abb9fe;--f1:#2c2b8c;--bd:#ccd5ff}
+    .ic-folder .f1{fill:var(--f1)}.ic-folder .f2{fill:var(--f2)}.ic-folder .f3{fill:var(--f3)}
+    .ic-folder .s1{stroke:var(--f1)}.ic-folder .s2{stroke:var(--f2)}.ic-folder .s3{stroke:var(--f3)}
+    .ic-folder .fb{fill:var(--bd)}
+    .ic-folder [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-folder[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <g>
+    <g data-part="back"><path class="f3" d="M3 6.5Q3 3.5 6 3.5H8.7Q9.7 3.5 10.4 4.3L11.8 6H18Q21 6 21 9V17.5Q21 20.5 18 20.5H6Q3 20.5 3 17.5Z"/></g>
+    <g data-part="front"><path class="f2" d="M4.5 9H19.5Q21 9 21 10.5V17.5Q21 20.5 18 20.5H6Q3 20.5 3 17.5V10.5Q3 9 4.5 9Z"/><path class="s1" d="M9.5 14.5H14.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+  </g>
+    <circle data-part="badge" class="fb" cx="19.2" cy="19.4" r="2.6"/>
+</svg>

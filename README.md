@@ -51,13 +51,14 @@ the winner back to exact vector by measuring it.
 
 ### `creating-icons`
 
-Draws UI icons as a family: colour layered icons for objects and mono "duo line" glyphs
+Draws UI icons as a family in three styles: layered colour icons for objects, flat colour
+icons (plain tone fills, no rim, gradient, gloss or shadow) and mono "duo line" glyphs
 for controls, each delivered as a standalone SVG with light and dark paints built in
 (CSS variables and `prefers-color-scheme`), plus optional hover motion and on/off states
 as plain CSS. Includes a script that derives exact light and dark paints from one accent,
 a preview-grid builder, accent families by meaning and worked examples.
 
-Its opinions: controls are never coloured and objects always are, flat fills and no ids so
+Its opinions: controls are never coloured and objects are layered or flat, no ids so
 the file survives any renderer, and every icon is checked at 16, 24 and 48px on both light
 and dark before it counts as done. Needs `node` for the two scripts.
 

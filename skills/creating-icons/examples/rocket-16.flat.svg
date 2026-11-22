@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="ic ic-rocket ic-flat ic-sm" fill="none" overflow="visible">
+  <style>
+    .ic-rocket{--f3:#adccff;--f2:#4f8ffa;--f1:#002b77;--bd:#3776df}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-rocket{--f3:#4270bd;--f2:#98bfff;--f1:#063784;--bd:#c2d9ff}}
+    :root.dark .ic-rocket,:root[data-theme=dark] .ic-rocket{--f3:#4270bd;--f2:#98bfff;--f1:#063784;--bd:#c2d9ff}
+    .ic-rocket .f1{fill:var(--f1)}.ic-rocket .f2{fill:var(--f2)}.ic-rocket .f3{fill:var(--f3)}
+    .ic-rocket .s1{stroke:var(--f1)}.ic-rocket .s2{stroke:var(--f2)}.ic-rocket .s3{stroke:var(--f3)}
+    .ic-rocket .fb{fill:var(--bd)}
+    .ic-rocket [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-rocket[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <g>
+    <path class="f3" d="M8 10.2L4.2 14.2Q3 15.8 3.4 17.5L3.6 18.4Q3.9 19.2 4.6 18.7L8 16.2Z"/>
+    <path class="f3" d="M16 10.2L19.8 14.2Q21 15.8 20.6 17.5L20.4 18.4Q20.1 19.2 19.4 18.7L16 16.2Z"/>
+    <g data-part="exhaust"><path class="f1" d="M9.5 15.6H14.5Q14.6 18.3 12 21.2Q9.4 18.3 9.5 15.6Z"/></g>
+    <path class="f2" d="M12 2.6C15.6 4.4 17.5 7.6 17.5 11.5V14.5Q17.5 16.5 15.5 16.5H8.5Q6.5 16.5 6.5 14.5V11.5C6.5 7.6 8.4 4.4 12 2.6Z"/>
+    <path class="f1" d="M12 2.6C13.8 3.5 15.18 4.75 16.1 6.26Q12 4.9 7.9 6.26C8.82 4.75 10.2 3.5 12 2.6Z"/>
+    <path class="f1" d="M9.4 10.8a2.6 2.6 0 1 0 5.2 0a2.6 2.6 0 1 0 -5.2 0Z"/>
+    <path class="f3" d="M10.6 10.8a1.4 1.4 0 1 0 2.8 0a1.4 1.4 0 1 0 -2.8 0Z"/>
+  </g>
+    <circle data-part="badge" class="fb" cx="19.2" cy="4.8" r="2.5"/>
+</svg>

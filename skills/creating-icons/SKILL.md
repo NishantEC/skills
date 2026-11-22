@@ -1,6 +1,6 @@
 ---
 name: creating-icons
-description: Use when asked to draw, redraw or extend a UI icon set. Colour layered icons for objects and features (depth, rim, shadow, gloss, hover motion, on/off state) and mono "duo line" glyphs for controls, in light and dark, delivered as standalone SVG plus CSS that drop into any project.
+description: Use when asked to draw, redraw or extend a UI icon set. Colour layered icons for objects and features (depth, rim, shadow, gloss, hover motion, on/off state), flat colour icons (same shapes, plain tone fills, no rim, gradient, gloss or shadow) and mono "duo line" glyphs for controls, in light and dark, delivered as standalone SVG plus CSS that drop into any project.
 ---
 
 # Creating Icons
@@ -17,9 +17,10 @@ not hand-write that boilerplate.
 | Kind | For | Look |
 | --- | --- | --- |
 | **Colour icon** | Objects and features: calendar, camera, gift, lock, rocket, settings, chart, tag | 4 to 8 pieces in 3 tiers, depth, one accent, hover move, on state |
+| **Flat icon** | Same objects when the product wants a clean, quiet, no-effects look, or when the layered depth is too loud | The same spec as a colour icon, filled with 2 to 3 flat tones of the accent, no rim, gradient, gloss or shadow |
 | **Glyph** | Controls: chevron, caret, arrow, close, plus, check, dots, search, filter, panel toggle | Mono duo line, 1.75 stroke, `currentColor`, wash only on real bodies |
 
-Controls are never coloured. Objects always are. Name files by what they depict.
+Controls are never coloured. Objects are coloured, layered by default, flat when asked or when the surrounding UI is flat (see Flat icons). Name files by what they depict.
 
 ## Procedure (colour icon)
 
@@ -42,9 +43,10 @@ Controls are never coloured. Objects always are. Name files by what they depict.
 5. **Review loop (mandatory, `references/review.md`).** Render, look at the image, fix, render again. At least one fix round, or write down why none was needed:
    ```bash
    node scripts/preview.mjs icons icons/preview.html --png icons/preview.png --motion icons/motion
+   node scripts/preview.mjs icons icons/preview.html --compare icons/styles.png   # layered | flat | glyph, 16/24/48, light, dark, .dark
    ```
    The PNG has three real renders (light, dark by `prefers-color-scheme`, dark by `.dark` class) at 16 small, 16 full, 24, 48 and 96px plus on and mid-move cells; the script fails if the two dark paths resolve to different paints. `--motion` records every icon's hover, on and off to GIF and MP4, writes a frame contact sheet, and fails on overflow past the 24 box, a loop seam, a wrong duration or reduced-motion misbehaviour. Open the PNG and the contact sheet with the image viewer. If the machine has a shared browser, add `--cdp <endpoint>` instead of letting the script start Chrome (needs ffmpeg for the recordings).
-6. Deliver `<name>.svg`, `<name>-16.svg`, `<name>.css`, the spec, and say which accent family you used.
+6. Deliver `<name>.svg`, `<name>-16.svg`, `<name>.flat.svg`, `<name>-16.flat.svg` (or only the flat pair for `"style":"flat"`), `<name>.css`, the spec, and say which accent family you used.
 
 ## Hard rules for colour icons
 
@@ -68,6 +70,18 @@ Detail that works at 48px turns to mush at 16. Compose therefore writes two file
 Why two files: it is the one approach that works everywhere. `@media` inside an SVG sees the page viewport when the SVG is inlined, so it cannot tell a 16px icon from a 96px one, and `<symbol>` sprites cannot carry per-icon CSS variables across files reliably. A file per size works in `<img>`, CSS `background`, inline SVG, sprites and icon libraries alike. Use `<name>-16.svg` when the icon renders at 20px or less, `<name>.svg` otherwise. In a component: `const src = size <= 20 ? `${name}-16.svg` : `${name}.svg``. The variant shares the class `ic-<name>` and the motion CSS, and its ids are `ic-<name>-sm-*`, so both can sit on one page.
 
 Rules when drawing: decide per piece what survives at 16 (silhouette, one depth cue, the one mark that names the object), mark the rest `"sm":false`. Minimum sizes are in `references/shapes.md`; `check.mjs` errors on a 16px filled shape under 2.5 units, a line under 2, more than 3 tier-1 pieces or no tier-3 piece.
+
+## Flat icons
+
+Same JSON spec, different renderer. Compose always writes `<name>.flat.svg` and `<name>-16.flat.svg` next to the layered files (same class `ic-<name>`, so the same `<name>.css` hover and on motion works). When the owner wants flat only, set `"style":"flat"` in the spec: `<name>.svg` and `<name>-16.svg` are then flat and no layered files are written. Recipe: draw the spec exactly as for a layered icon, then compose.
+
+- Tiers become tone steps of the one accent: t3 light tint (dark mode: mid), t2 the accent, t1 deep tone for marks. Lines take their tier's tone. Gloss pieces are dropped, so do not rely on them for any shape. The badge is a flat dot.
+- Never allowed (check.mjs errors): rim or stroke outline on a shape, gradient, filter or shadow, gloss, translucency.
+- Separation comes from the tone step alone, so the t3 plate must peek out 1.5 to 3 units, and marks sit on the t2 body. Contrast, checked in light and dark: t1 on t2 at least 3:1, t2 against t3 at least 1.3:1, t2 against the panel at least 1.8:1 (dark 5:1). `node scripts/paints.mjs '#hex' --flat` prints the table; if an accent fails, move its lightness to 55 to 65%.
+- A t1 piece that sits outside the body (a shackle, an ear cup) is dark in light mode and a mid tone in dark; keep such parts thick (at least 2.5 units) so they hold at 16px.
+- Same hard rules otherwise: 24 grid, live area, at least 3 pieces, 16px variant limits, hover motion on a `part`.
+
+Choose: **layered** for hero and feature icons where depth sells it; **flat** for dense lists, toolbars with a colour accent, and flat or minimal UIs; **glyph** for controls, never coloured.
 
 ## Dark mode paths
 

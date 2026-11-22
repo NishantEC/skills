@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" class="ic ic-receipt ic-flat ic-sm" fill="none" overflow="visible">
+  <style>
+    .ic-receipt{--f3:#bcc7fe;--f2:#7785fa;--f1:#241e80;--bd:#5f67eb}
+    @media (prefers-color-scheme:dark){:root:not(.light):not([data-theme=light]) .ic-receipt{--f3:#5b66c5;--f2:#abb9fe;--f1:#2c2b8c;--bd:#ccd5ff}}
+    :root.dark .ic-receipt,:root[data-theme=dark] .ic-receipt{--f3:#5b66c5;--f2:#abb9fe;--f1:#2c2b8c;--bd:#ccd5ff}
+    .ic-receipt .f1{fill:var(--f1)}.ic-receipt .f2{fill:var(--f2)}.ic-receipt .f3{fill:var(--f3)}
+    .ic-receipt .s1{stroke:var(--f1)}.ic-receipt .s2{stroke:var(--f2)}.ic-receipt .s3{stroke:var(--f3)}
+    .ic-receipt .fb{fill:var(--bd)}
+    .ic-receipt [data-part=badge]{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+    .ic-receipt[data-state=on] [data-part=badge]{transform:scale(1)}
+  </style>
+  <g>
+    <path class="f3" d="M10 5.5H18.5Q21 5.5 21 8V18.5Q21 21 18.5 21H10Z"/>
+    <g data-part="paper"><path class="f2" d="M7 2.5H16.5Q18.5 2.5 18.5 4.5V20.5L16.3 19.2L14.2 20.5L12 19.2L9.8 20.5L7.7 19.2L5.5 20.5V4Q5.5 2.5 7 2.5Z"/><path class="s1" d="M8.6 8h6.8M8.6 11.4h6.8M8.6 14.8h3.6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+  </g>
+    <circle data-part="badge" class="fb" cx="19.2" cy="19.4" r="2.6"/>
+</svg>
